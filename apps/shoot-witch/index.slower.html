@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html><body>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="crystal-repo.js"></script>
+<script type="text/javascript" src="crystal.slower.js?v=12344"></script>
+
+<style>
+.sprite {
+  /*width:20px;
+  height:20px;*/
+  
+  user-select:none;
+  -webkit-user-select:none;
+  font-size:16px;
+  position:absolute;
+  text-align:center;
+  font-weight:bold;
+}
+
+body {
+  background:#000;
+  position:relative;
+  color:white;
+  margin:15px;
+  font-family:sans-serif;
+}
+
+#game {
+ width:800px;
+ height:600px;
+ margin-left:0px;
+ background:#002a00;
+ position:relative;
+}
+
+.game-screen {
+  display:none;
+  width:800px;
+  height:600px;
+  overflow:hidden;
+  position:absolute;
+}
+
+
+
+
+#game1, #game1 * {
+  cursor:crosshair;
+}
+
+
+.menu {
+ width:400px;
+}
+
+#level {
+  color:white;
+  font-size:20px;
+  font-weight:bold;
+  font-family:Lucida Console, sans-serif;
+  text-align:center;
+  top:100px;
+  height:500px;
+}
+
+.dialog {
+  width:200px;
+  top:120px;
+  left:160px;
+  font-size:16px;
+  text-align:left;
+  position:absolute;
+}
+
+
+/* main menu */
+
+.menu {
+    width:400px;
+    margin-left:200px;
+    margin-top:60px;
+}
+
+.menu button {
+  border:none;
+  width:100%;
+}
+
+.button-logo {
+  height:100px; 
+    background:url('shoot-da-witch-pixel-anim.gif');
+  background:url('shoot-da-witch_blue2.gif');
+
+
+}
+
+.menu:hover .button-logo {
+   background:url('shoot-da-witch_hover.gif');
+   background:url('shoot-da-witch_blue2.gif');   
+}
+
+.button-play {
+  height:168px;
+  background:url('play.gif');
+}
+
+.button-play:hover {
+  background:url('play_hover.gif');
+}  
+
+.button-about {
+  height:75px; 
+  background:url('about.gif');
+}
+
+.button-about:hover {
+  background:url('about_hover.gif');
+}
+
+.button-more-games {
+   height:64px;
+   background:url('more-games.gif');
+}
+
+
+.button-more-games:hover {
+   background:url('more-games_hover.gif');
+}
+
+#overlay {
+  background:white;
+  opacity:0.6;
+  -moz-opacity:0.6;
+  z-index:10;
+  display:none;
+  position:absolute;
+}
+
+#overlay-fail {
+  background:red;
+  opacity:0.52;
+  filter:alpha(opacity:52);
+  z-index:10;
+  display:none;
+  width:800px;
+  height:100px;
+  top:500px;
+  position:absolute;
+}
+
+
+#level1-info {
+  display:none;
+  position:absolute;
+  left:10px;
+  top:20px;
+  font-size:20px;
+  z-index:30;
+  height:40px;
+  color: #ffa;
+  cursor:default;
+}
+
+#congratulations, #failure {
+  z-index:30;
+  width:400px;
+  padding:8px;
+  background:#000;
+  opacity:0.7;
+  filter:alpha(opacity=70);
+  font-size:30px;
+  left:200px;
+  top:100px;
+  position:absolute;
+  cursor:hand;
+  text-align:center;
+/*  background-color:abafe5;*/
+}
+
+#congratulations {
+  height:340px;  
+}
+
+#failure {
+  height:140px;  
+}
+
+
+#congratulations:hover, #failure:hover {
+  background:#700;
+/*  color:#f6cff1;*/
+  opacity:0.9;
+  filter:alpha(opacity=90);
+}
+
+#damage-display {
+   font-size:30px;
+   position:fixed;
+}
+
+#congratulations-total-score {
+   color:#0a0;
+}
+
+#congratulations-dead-animals, #congratulations-damage {
+  color:#f11;
+}  
+</style>
+
+<div class="preloader" style="display:none">
+<img src="play_hover.gif" />
+<img src="about_hover.gif" />
+<img src="more-games_hover.gif" />
+</div>
+
+<div id="level1-info">
+<!--1. charging level affects how far you are able to shoot.<br />-->
+1. charging level determines how far you will shoot.<br />
+2. be careful: your shootings may harm animals too.
+</div>
+
+<div class="game-screen" id="screen-menu">
+    <div class="menu">
+        <button class="button-logo"></button>    
+        <button class="button-play"></button>    
+        <button class="button-about"></button>
+        <button class="button-more-games"></button>
+    </div>   
+</div>
+
+<div class="game-screen" id="failure"> 
+You lost. <br /> That witch killed 'em all.<br />
+<strong>continue</strong>
+</div>
+
+<div class="game-screen" id="congratulations"> 
+    You killed that witch. <br /><br />
+    Dead animals: <span id="congratulations-dead-animals"></span> <br />
+    Other damages: <span id="congratulations-damage"></span> <br /><br />    
+    Total Score: <span id="congratulations-total-score"></span> <br /><br />    
+    <strong>continue</strong>
+</div>
+
+
+<div class="game-screen" id="overlay"> 
+    
+</div>
+
+<div  id="overlay-fail"> 
+    
+</div>
+
+<div class="game-screen" id="game"> 
+    
+</div>
+
+<div class="game-screen" id="level" > 
+   LEVEL <span id="level-number"></span>
+
+
+<div class="dialog" data-text="I left window open... and look! Now there is a witch in my room! She's destroying my toys! Can you help me?">
+
+
+</div>
+  
+   <img src="images/boy.png" />
+</div>
+
+
+
+
+
+
+<div class="game-screen" id="about" style="padding:100px 30px;color:white;font-size:20px;font-weight:bold"> 
+    Shoot da Witch (version: crystal 0.1)<br /><br/>
+    
+    programming & graphic effects: Lukasz Litynski<br />           
+    graphic images: free (Creative Commons)<br />
+    technologies: HTML/CSS, JavaScript, jQuery, GIMP<br /> 
+    <a href="#exit">Back to menu</a>   
+</div>
+</body></html>
