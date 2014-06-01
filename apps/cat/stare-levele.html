@@ -1,0 +1,568 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<style>
+body {
+  background:black;
+  color:white;
+  font-family:sans-serif;  
+}
+
+#menu {
+    padding:100px;
+}
+
+
+.instructions {
+  position:absolute;
+  top:70px;
+  font-size:24px;
+  left:110px;
+  z-index:100;
+  background:rgba(0,0,0,0.6);
+  padding:8px 8px;
+}
+.pointer {
+  z-index:101;
+}
+
+#menu a {
+ color:white;
+ text-decoration:none;
+/* border: 1px solid #aaa;;*/
+ padding:4px;
+ width:200px;
+ display:block;
+ text-align:center;
+ border-radius:5px;
+}
+#menu a.app-link:hover {
+  background:#ea5;
+}
+
+body * {
+
+}
+
+
+.highlight {
+  border: 2px solid yellow;
+}
+
+#progress-container {
+  width:600px;
+  height:10px;
+  position:absolute;
+  left:200px;
+  top:40px;
+  background:#333;
+  border:1px solid #ea5;
+}
+
+
+#progress {
+  transition: all 0.2s ease-in;  
+  -webkit-transition: all 0.2s ease-in;  
+  
+
+  width:0px;
+  height:10px;
+  background:#fa6;
+}
+
+.platform {
+}
+.scene > * {
+  position:absolute;
+  left:0px;
+  top:0px;
+}
+
+.scene {
+ position:absolute;
+ left:0px;
+}
+
+.scene-overlay-dark, .scene-overlay-flash {
+  width:800px;
+  height:600px;
+
+  z-index:100;
+  display:none;
+}
+
+.scene-overlay-flash {
+  background-color:#fff;
+  opacity:0.4;    
+}
+  
+.scene-overlay-dark {
+  background-color:#000;
+  opacity:0.8;    
+  z-index:101;
+}
+
+
+
+.screen {
+  width:800px;
+  height:600px;  
+ 
+  
+  overflow:hidden;
+  background-color:#005;
+  position:relative;
+/* background-image:url('background.jpg');*/
+ background-atachment:fixed;
+  
+}
+
+.xxx {
+  opacity:0.6!important;
+  background:green!important;
+  border: 2px solid blue!important;
+}
+
+.tile {
+  position:absolute;
+  border:1px solid #aaa;
+  z-index:-1;
+  background:white;
+  opacity:0.2;
+}
+.active {
+  background:blue;
+}
+
+.collision {
+  background:#f66;
+}
+
+.screen {
+  display:none;
+}
+
+.sprites {
+  display:none;
+}
+</style>
+
+<script type="text/javascript" src="jquery.min.js"></script>
+
+<!--<script type="text/javascript" src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>-->
+
+<script type="text/javascript" src="types.js?a=a3341a"></script>
+<script type="text/javascript" src="creator.js?a=aasa1"></script>
+<script type="text/javascript" src="map.js?1443a"></script>
+
+
+<script>
+
+function timer() {
+    game.sprites.update();
+    map.update();
+
+}
+
+
+$(function() {
+    
+    var loadedCount;
+    var imagesToLoad = $("#templates *").toArray();
+    var imageCount = imagesToLoad.length;
+    var progressBar = $("#progress")[0];
+    
+    var isIntro = false;
+    
+    function gameLoop() {
+    
+        var sprites = app.screens.getCurrent().sprites;
+        if (sprites) {
+            sprites.update();
+        }
+        app.player = $("#player")[0].obj;        
+        if (!isIntro) {
+            if (app.player)
+                app.focusViewport(app.player);
+        } else
+           ;// app.focusViewport($("#focus1")[0].obj);
+    }
+
+	function checkProgress() {
+    
+	    var t = new Date();
+		var progress = 0;
+		var i = imageCount;
+        
+		while (i--) {
+            document.title = (imagesToLoad[i].src + "---" + imagesToLoad[i].width);
+			if (imagesToLoad[i].width && imagesToLoad[i].height) {
+    				progress++;
+		    }	
+		}
+
+		progressBar.style.width = ~~((progress / imageCount) * 600) + "px";
+		
+		
+		if (progress != imageCount) 
+			setTimeout(checkProgress, 100);
+		else {
+    		$("#progress-container").fadeOut();
+		    app.screens.run( doc.getElementById('menu'));
+            app.handlers["#level-1__run"] = function() {
+                app.instruction("This button can be helpful...", '#trap-button');
+                //app.instruction("button", '#trap-button');        	                        	
+                setTimeout(function() {isIntro = false}, 20);
+                setInterval(gameLoop, 16);                
+            }
+			
+		}
+	}
+	checkProgress();
+	
+	var keyMap = {37: 'left', 39: 'right', 38: 'up', 32:'use'};	
+	$(document).keyup(function(e) {	
+		var player = $("#player")[0].obj;
+        var key = keyMap[e.keyCode];
+		if (player && key=='left' || key=='right') {
+    		player.dontWalk();
+        }
+        app.idle(key);
+	});
+	
+	$(document).keydown(function(e) {
+        var key = keyMap[e.keyCode];
+        app.active(key);        
+		var player = $("#player")[0].obj;
+
+        
+        var dx = 1;
+        if (key) {
+            switch(key) {
+                case 'left':
+                    dx = -1;                
+                case 'right':                
+        		    player.walk(dx);
+        		    break;
+        	    case 'up':
+    			    player.jump(15);        	    
+    			    break;
+    		    case 'use': 
+		            map.findObjectsNearby(player, 250, function() {
+		                if (this.type == 'bomb') //!!! it's wrong, has to be more universal
+        			        this.use();
+		            });
+    		    
+    		        break;
+            }
+        }
+        return key? false : true;
+        
+	});
+	
+    app.handlers['#player__move'] = function() {
+        if (this.x < 0)
+            this.x = 0;
+    }
+
+    app.handlers['#box1__collision'] = function(target) {	        
+        if(target == app.player)
+            app.instruction('Move the box to the edge,<br> and jump on it to get here.', '#platform1'); 	
+            
+        var maxX = app.TILE_SIZE * 12;
+        var minX = app.TILE_SIZE * 3.5;
+        if (this.x > maxX || this.x < minX) {
+            this.x = app.TILE_SIZE * 10;
+            this.y = 200;            
+            this.vx = 0;
+            this.vy = 0;            
+            this.platform = null;
+        }
+            
+    }
+    
+    var handlers = app.handlers;
+    
+
+    app.handlers['#trap-button__use'] = function() {
+        app.instruction("Do you see that box? You can move it.", '#box1');
+        //app.instruction("You can move this box.", '#box1');
+    };
+    app.handlers.fish__collision = function(target) {
+        if(target == app.player)
+            this.hide(200);
+    }
+
+    app.handlers["#platform1__stand"] = function(target) {
+         app.instruction('FISH!!!!!!!1111', '#fish2');        	    
+    }
+
+    
+    app.handlers["#platform2__stand"] = function(target) {
+         app.instruction('', '#null');        	
+    }
+    
+    app.handlers["#platform3__stand"] = function(target) {
+         app.instruction('But... how will we get them?', '#elevator');        	
+    }
+    
+    app.handlers["#elevator__stand"] = function(target) {
+         this.active = true;
+         app.instruction("Let's see...", '#platform4');        	
+         if (target.type == 'bomb') {
+            this.active = true;
+            app.instruction("",  '#null');
+            app.handlers["#elevator__move"] = function(target) {
+                if (this.y >= this.maxY - 2) {
+                    this.active = false;
+                    app.instruction("Put the explosives under the pantry. ",  
+                         '#platform2');
+                }
+            };//!!! prowizorka
+         }
+    }
+    
+    app.handlers["#elevator__move"] = function(target) {
+         if (this.y <= this.minY + 15) {
+            this.active = false;
+            this.dy = 1;
+         }
+    }
+    
+    app.handlers["#platform4__stand"] = function(target) {
+        if (target == app.player)
+            app.instruction("Red boxes contain explosives. <br> Put one of these on the elevator.", '#bomb1');               
+            
+        handlers["#platform1__stand"] 
+            = handlers["#platform2__stand"] = handlers["#platform3__stand"]
+            = function(target) {
+                if (target.type == 'fish')
+                    app.instruction('Collect.', target);
+            }
+            
+            
+            
+    }
+    
+   
+    
+
+});
+
+</script>
+
+
+<div style="width:;height:0px;overflow:hidden" id="templates">
+  <img id="obrazek" class="bullet" src="character.png" />
+  <img class="pointer" src="pointer.png" />
+  <img class="cat" src="cat1.png" data-sprite="{}" />
+  <img class="enemy" src="cat1.png" data-sprite="{gravity:1}" />      
+  <img class="elevator" src="elevator.png" data-sprite="{speed:2,dy:-1, inert:1}" />
+<!--  <img class="childish" src="childish.png" />
+  <img class="childish2" src="childish2.png?=3" />
+  <img class="childish3" src="childish3.png" />              -->
+  <img class="bomb" src="bomb2.png" data-sprite="{pushable:1}" />
+  <img class="tree" src="tree.png" data-sprite="{collidable:0}" />  
+  <img class="fish" src="fish2.png" data-sprite="{gravity:1,stopsOtherObjects:0}" />
+  <img class="explosion" src="explosion.png" data-sprite="{visible:0}"/>  
+
+
+
+  <img class="platform2" src="platform4.png?=2" data-sprite="{destructable:0,inert:1}"/>
+  <img class="brick" src="brick2.png" data-sprite="{pushable:1, gravity:1}"/>      
+  <img class="door" src="elevator.png?=1" />
+  <img class="button" src="button2.png?=1" />
+
+  <img class="teleport" src="button.png?=1" />
+  <img class="trap" src="platform2.png" />
+  <img class="snowman" src="snowman.png" />  
+  
+  <img class="iceberg" src="iceberg.png" data-sprite="{collidable:0}"/>
+  <img class="icewall-r" src="icewall-r.png" data-sprite="{collidable:0}"/>              
+
+</div>
+
+
+<script>
+/*nakoo.handlers.wolf_collision = function() {
+    this.x = 200;
+};
+*/
+</script>
+
+<div id="progress-container">
+ <div id="progress"></div>   </div> 
+
+<div class="screen no-sprites" id="menu">
+<div style="position:static">
+    <h2><a>Movin' Cat</a></h2>
+    <h2><a class="app-link" href="#level-1">Play</a></h2>
+    <h2><a class="app-link" href="#about">About</a></h2>
+</div>    
+</div>
+
+<div class="screen no-sprites" id="about">
+<div style="position:static">
+<h1>Movin' Cat 0.1</h1>
+<h2>programming: Łukasz Lityński</h2>
+<h2><a class="app-link" href="#->exit">Powrót</a></h2>
+</div>
+</div>
+
+<div class="screen" id="level-1">
+    <h3 class="instructions"></h3>
+    
+    
+    
+    <div class="scene2" style="opacity:0.8;position:absolute">
+    
+    
+    <imag src="tree.png" style="position:absolute;left:350px;top:200px;"/ >
+
+    
+    </div>
+    <div class="sprites">
+
+
+
+
+
+     <div id="null" class="platform" data-sprite="{tx:100,visible:0}" > </div>
+     
+    <!-- <div id="iceberg1" class="iceberg" data-sprite="{tx:4,ty:5}" > </div>-->
+     
+
+
+
+
+        
+
+
+    <div class="fish" 
+        data-sprite="{destructable:0, tx:16.5, ty:4}"> </div>		
+    <div id="fish2" class="fish" 
+        data-sprite="{destructable:0, tx:18.5, ty:4}"> </div>		
+    <div class="fish" 
+        data-sprite="{destructable:0, tx:20.5, ty:4}"> </div>		
+
+    
+        
+    <div class="wood-h" 
+        data-sprite="{tx:16, ty:5, vy:0, vx:0}"> </div>		
+    <div class="wood-h" 
+        data-sprite="{tx:19, ty:5, vy:0, vx:0}"> </div>		
+        
+       
+    <div class="wood-v" 
+        data-sprite="{tx:22, ty:2, vy:0, vx:0}"> </div>		
+    <div class="wood-v" 
+        data-sprite="{tx:22.5, ty:2, vy:0, vx:0}"> </div>		
+        
+        
+        
+        
+        
+
+
+    <div id="elevator" class="elevator" 
+        data-sprite="{active:0,tx:23.6, ty:8, speed:1.5, minY:200, maxY:400}"> </div>		
+    <div id="elevator" class="platform" 
+        data-sprite="{tx:23.5, ty:9}"> </div>		
+    <div id="elevator" class="platform" 
+        data-sprite="{tx:20.5, ty:9}"> </div>		
+    <div id="elevator" class="platform" 
+        data-sprite="{tx:26.5, ty:9}"> </div>		
+        
+
+        
+        
+        
+
+        
+        
+        
+    <div id="bomb1" class="bomb" 
+        data-sprite="{gravity:1, tx:28, ty:3, vy:0, vx:0,maxDistance:200}"> </div>		
+    <div id="bomb2" class="bomb" 
+        data-sprite="{gravity:1, tx:34, ty:1, vy:0, vx:0,maxDistance:200}"> </div>		
+        
+        
+        
+		
+    
+    
+    
+    
+<!--    <div class="platform" 
+        data-sprite="{tx:9.9, ty:9.8, vy:0, vx:0}"> 
+    </div>		-->
+
+
+
+
+<!--    <div class="brick" 
+        data-sprite="{tx:13, ty:5, vy:0, vx:0}"> </div>		-->
+    
+    
+
+    <div id="platforma" class="elevator" 
+        data-sprite="{tx:3.3, y:410, vy:0, vx:0, minY:350,maxY:490,visible:1, gravity:0}"> 
+    </div>		
+
+    
+   <!--     <div id="platforma" class="door" 
+        data-sprite="{tx:3.3, ty:4.8, vy:0, vx:0, maxY:500,visible:1, gravity:0}"> 
+    </div>		
+-->
+
+    
+    
+    
+
+
+    <div class="icewall-r" 
+        data-sprite="{tx:0.0, ty:5.8}"> </div>		
+
+
+
+
+    <div id="player" class="cat" 
+        data-sprite="{stopsOtherObjects:0,speed:7,destructable:0,gravity:1, mass: 0.1, inert:0, tx:1, ty:8, vy:0, vx:0}"> </div>		
+    
+  
+    
+    
+    <div class="enemy" 
+        data-sprite="{pushable:0, mass: 0.1, inert:0, x:640, y:300, vy:0, vx:-6,visible:0}"> 
+    </div>		
+    
+
+
+
+    
+    
+
+
+    
+    
+    
+    <div id="explosion" class="explosion" 
+        data-sprite="{pushable:0, mass: 0.1, inert:0, x:500, y:300, vy:0, vx:0, maxDistance:200, collidable:0}"> 
+    </div>
+    
+    
+    <div id="pointer" class="pointer" 
+        data-sprite="{pushable:0, mass: 0.1, inert:0, x:500, y:300, vy:0, vx:0, maxDistance:200, destructable:0, collidable:0}"> 
+    </div>
+        
+    
+
+		
+	</div>
+
+    
+</div>
+
+
+

@@ -1,0 +1,482 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script src="Box2dWeb-2.1.a.3.min.js" type="text/javascript"></script>
+<script src="jquery.min.js" type="text/javascript"></script>
+<script src="framework.js?a=13" type="text/javascript"></script>
+
+<title>HTML5 platformer game - first level (gra HTML5, platformówka) </title>
+<meta charset="utf-8">
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-35180478-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<style type="text/css">
+body {
+
+}
+
+ul {
+  font-size:18px;
+  font-weight:bold;
+  color:#eee;
+}
+#canvas {
+position:absolute;
+z-index:200;
+background:black;
+}
+
+#menu, #about {
+  background-image:url('cover.jpg');
+  height:600px;
+  width:800px;
+  padding-left:60px;
+  padding-top:100px;
+}
+
+#status-fps {
+  z-index:2000;
+  position:fixed;
+  left:400px;
+}
+
+button {
+  color:#704405;
+  background:#ffb13e;
+  padding:10px;
+  margin:10px;
+  font-size:30px;
+  font-family:sans-serif;
+  border:none;
+  border-radius:30px;
+  box-shadow: 0px 0px 3px 3px #eee; 
+  position:relative!important;
+  -webkit-transition: 1s all;
+}
+
+button:hover, button.pressed {
+  box-shadow: 0px 0px 6px 6px white;
+  top:8px;
+  color:#a00;
+}
+
+.sprite {
+  position:absolute;
+}
+
+.scene {
+ position:relative;
+}
+
+.scene {
+ 
+}
+
+.sprite {
+/*  -webkit-transform:translate(-2000px, -2000px);  
+  transform:translate(-2000px, -2000px);*/
+  left:-2000px;/*!!!!! uwazac przy zmianie metody left/top --> transform */
+  top:-2000px;/* bo teraz obiekty sa przesuniete za pomoca left/top */
+  z-index:10;
+}
+
+
+
+.game {
+  width:800px;
+  overflow:hidden;
+  height:600px;
+  margin:auto;
+  position:relative;
+  background:url('background.jpg?a=1');
+  border-radius:15px;
+}
+
+.screen {
+  display:none;
+  position:relative;
+
+
+  color:white;
+}
+
+
+.text {
+  font-size:24px;
+  font-weight:bold;
+  color:white;
+  position:absolute;
+  text-shadow:0px 0px 5px black;
+  z-index:340;
+}
+
+.coin {
+  background-image:url('coin.4.png?a=1a');
+  text-align:center;
+  width:39px;  
+  padding-top:8px;
+  font-family:sans-serif;
+  height:32px;
+  color:#4a6;  
+  text-shadow:1px 1px 3px #363, 1px 1px 1px black, 0px 0px 6px #0a0;
+}
+
+body {
+ font-family:sans-serif;
+ font-size:16px;
+}
+
+.mana, .mana-container {    
+    border-bottom-right-radius:25px;
+    border-top-right-radius:5px;
+    border-top-left-radius:5px;
+    border-bottom-left-radius:5px;                            
+}
+
+#about {
+  background-image:none;/*rgba(255,255,255,0.4);*/
+}
+
+
+
+#status, .mana-container {
+
+}
+
+#status-coins span {
+  position:absolute;
+  text-shadow: 0px 0px 6px white;
+}
+
+#status {
+  font-size:26px;
+  z-index:100;
+  position:absolute;
+  top:540px;
+  left:100px;  
+  height:30px;
+}
+
+#status > * {
+  margin:10px;
+  width:100px;
+  height:40px;
+
+}
+
+#status * {
+  float:left;
+}
+
+
+.mana-container {
+	height:30px;
+    position:absolute;
+    top:550px;
+    left:200px;
+    z-index:100;
+    background:rgba(0,0,0,0.6);
+    width:400px;    
+}
+
+.mana {
+	height:27px;
+    background:url('mana.png?a=as1ssfd');
+    opacity:0.3;
+    max-width:400px;
+    -webkit-transition:0.04s all;
+	letter-spacing:0.6em;
+	text-align:center;
+    padding-top:5px;	
+	color:rgba(255,255,255,0.9)
+
+}
+
+.mana-highlight {
+    opacity:0.85;
+    border:white;
+    box-shadow:0px 0px 6px 6px rgba(255,255,255,0.4);
+    text-shadow: 0px 0px 7px white;
+}
+
+.shadow {
+     background-image:url('cat-light.png?d=2');
+     width:49px;
+     height:75px;
+     opacity:0.7;
+}
+
+.mill {
+  z-index:10;
+}
+.mruczek {
+  z-index:1;
+}
+.pinetree {
+  z-index:10;
+}
+.cloud1, .interior1 {
+  z-index:0!important;
+}
+
+.banner {
+  position:absolute;
+  color:white;
+  background:rgba(0,0,0,0.4);
+  z-index:400;
+  text-align:center;  
+  width:800px;  
+  height:600px;
+  margin:auto;
+  display:none;
+  border-radius:10px;
+  -webkit-box-shadow:0px 0px 20px 6px white;
+}
+
+#hit-overlay {
+  background:rgba(255,0,0,0.6);
+}
+
+#death {
+  background:url('death.jpg');
+}
+
+a {
+   background:rgba(255,255,255,0.5);
+   text-decoration:none;
+   color:#000;
+   padding:4px;
+   margin:3px;
+}
+
+ul {
+  list-style:none;
+}
+
+a:hover {
+  color:#446;
+}
+
+a {
+   border-radius:4px;
+}   
+
+h3 {
+  border-radius:14px;
+}
+
+#about ul {
+  margin:-10px;
+}
+
+#about li {
+   margin-top:10px;
+}
+
+
+#about ul > li:first-child {
+   margin-top:10px;
+}
+
+#about ul > li {
+   
+   -webkit-transform:rotate(-5deg);
+   transform:rotate(-5deg);   
+   display:inline-block;
+   transition:0.2s all;
+}
+
+#about li:hover {
+   -webkit-transform:rotate(-1deg);
+   transform:rotate(-1deg);
+   
+}
+
+#about h3 {
+  background:rgba(0,0,0,0.3);
+  padding:7px;
+  width:400px;
+   -webkit-transform:rotate(-5deg);
+   transform:rotate(-5deg);
+  
+}
+
+</style>
+</head>
+
+<body>
+
+
+<iframe src="https://www.facebook.com/plugins/like.php?href=http://hex13.pl/cat"
+        scrolling="no" frameborder="0"
+        style="border:none; width:450px; height:50px"></iframe>
+        
+<div id="images" style="display:none">
+    <img class="olivier" src="../cat/cat.4.png" />
+    <img class="mruczek" src="cat-light.png?adc=2dw1" />
+    <img class="platforma" src="platform.png" />
+    <img class="lock" src="../cat/button2.png" />
+    <img class="key" src="key.gif" />                                                            
+    <img class="platform" src="platform2.png" data-sprite="{isStatic:1,destructable:0,inert:1}"/>
+    <img class="platformice" src="platform2.png" data-sprite="{isStatic:1,destructable:0,inert:1}"/>	
+    <img class="ice" src="ice9x05.png" />
+    <img class="smallice" src="ice4x05.png" />    
+    <img class="box" src="box.png" data-sprite="{pushable:1, gravity:1}"/>          
+  <img class="wood-h" src="../cat/wood.png" data-sprite="{gravity:0}" />
+  <img class="wood-v" src="../cat/wood-v.png" data-sprite="{gravity:0}" />              
+  <img class="pointer" src="pointer2.png" />
+  <img class="iceblock" src="iceblock.png" />
+  <img class="millcenter" src="planet.png?a=1" />
+  <img class="planet" src="planet.png?a=1" />  
+  <img class="old-mill" src="mill.2.png?a=2" />                              
+  <img class="mill" src="mill.png?a=s2" />
+  <img class="greenplatform" src="rockplatform9x1.png?a=s2" />  
+  <img class="pokraka-leg" src="mill.png?a=s2" />                                                                  
+  <img class="millbackground" src="millbackground.png" />
+  <img class="interior1" src="millbackground.png" />
+  <img class="door" src="gate.png" />      
+  <img class="coin1" src="coin.4.png" />
+  <img class="snowman" src="scarysnowman.png" />
+  <img class="exit" src="exit.gif" />  
+  <img class="pokraka" src="pokraka.png" />
+  <img class="pinetree" src="pinetree.png" />
+  <img class="cloud1" src="cloud1.png" />      
+  <img class="pokraka-third-leg" src="pokraka-third-leg.png" />        
+  
+  <img class="wall3x3" src="greenwall3x3.png" />                                                                  
+  
+  
+  <img class="soil9x2" src="soil9x2.png" />
+  <img class="soilupper9x2" src="soilupper9x2.png" />    
+
+  <img class="sprite__niema" src="cat.png" />                                                                  
+    
+  
+  <img class="introbox" src="box.png" />                                                                  
+  
+</div>
+
+
+<div id="console"></div>
+<div class="game">
+<div class="banner" id="hit-overlay"></div>
+<div class="banner" id="death"></div>
+<div class="banner" id="complete"><h1>Congratulations!! You passed first level! (but game is still in production)</h1></div>
+<div class="screen" id="menu">
+<button onclick="app.switchScreen('level-1');">Play</button>
+<button onclick="app.switchScreen('about');">About</button>
+<ul>
+<li>You're a cat.</li>
+<li>You have the power of Magic Jumping.</li>
+<li>Beware of machines and enemy creatures!</li>
+</ul>
+
+</div>
+<div class="screen" id="gra">GRA</div>
+<div class="screen" id="intro">INTRO</div>
+
+<div class="screen" id="about">
+<button onclick="app.switchScreen('level-1');">Play</button>
+<button onclick="app.switchScreen('about');" class="pressed">About</button>
+
+
+<h3>programming</h3>
+<ul>
+<li>
+<a href="http://hex13.net">Łukasz Lityński</a>
+</li>
+</ul>
+
+
+
+
+
+<h3>graphic editing, FX:</h3>
+
+<ul>
+<li>
+GIMP / Inkscape / CSS3 - <a href="http://hex13.net">Łukasz Lityński</a>
+</li>
+</ul>
+
+
+<h3>used images:</h3>
+<ul>
+<li>
+<a href="http://en.wikipedia.org/wiki/File:Kittyply_edit1.jpg">photo of a cat by David Corby</a>
+<a href="http://creativecommons.org/licenses/by/2.5/deed.en">(CC BY 2.5)</a>
+</li>
+<li>
+<a href="http://openclipart.org/detail/17683/cartoon-cat-by-lemmling">cat (in game character) by lemmling</a>
+<a href=" http://creativecommons.org/publicdomain/zero/1.0/">(CC0 1.0)</a>
+</li>
+
+</ul>
+
+
+</div>
+
+
+<div id="level-1" class="screen">
+    <div id="status-fps"></div> 
+<div id="status">
+
+    <div><img style="margin:-4px 7px 0px 0px" src="coin.4.png" /> <div id="status-coins"></div></div>
+</div>
+
+
+
+<div class="mana-container">
+<div class="mana">MANA</div>
+</div>
+<div class="scene" id="level-1-scene"></div>
+<!--<canvas width="800" height=600"  id="canvas"></canvas>-->
+</div>
+
+
+
+</div>
+
+<div style="height:30px" id="object-info">
+</div>
+
+
+   <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'hex13'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+<!--
+<p style="width:430px">HTML5 casual platform game. I used JavaScript, jQuery and Box2D psychics engine (the same that is used in Angry Birds). Now I need to build some more levels... Follow me on twitter: <a href="http://twitter.com/hex13games">@hex13games</a></p>
+<p>If you want to see more games I've done: <a href="/">click here</a>. -->
+<div style="display:none">
+<button onclick="app.switchScreen('menu');">menu</button>
+<button onclick="app.switchScreen('level-1');">gra</button>
+<button onclick="app.switchScreen('intro');">intro</button>
+<button onclick="app.switchScreen();">powrót</button>
+</div>
+
+</body>
+</html>

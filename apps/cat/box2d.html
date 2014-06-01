@@ -1,0 +1,20 @@
+<script src="Box2dWeb-2.1.a.3.min.js"></script>
+<script>
+var world;
+function importStar(module) {
+    for (var a in module)
+        window[a] = module[a];
+}
+
+var	b2Vec2 = Box2D.Common.Math.b2Vec2,
+b2BodyDef	= Box2D.Dynamics.b2BodyDef,
+b2Body		= Box2D.Dynamics.b2Body,
+b2FixtureDef	= Box2D.Dynamics.b2FixtureDef,
+b2World		= Box2D.Dynamics.b2World;
+
+window.onload = function() {
+    alert('x');
+    world = new Box2D.Dynamics.b2World(new b2Vec2(0, 10), true);
+    alert(445);
+};
+</script>
