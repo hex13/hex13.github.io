@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="http://code.jquery.com/jquery-2.1.1.js"></script>
+<script src="/third-party/phaser.js"></script>
+<style>
+    #game {
+        background-color: black;
+    }
+</style>
+
+</head>
+<body>
+<div id="game"></div>
+
+
+<script>
+    $.get('game.json',function (gamedata) {
+        // index of level, counting from zero
+        var levelIndex = 0;
+        
+        function nextLevel() {
+            levelIndex++;
+            game.state.start('level-' + levelIndex);            
+        };
+        
+
+        var state = {
+            preload: function () {
+                gamedata.images.forEach(function (tuple) {
+                    // tuple is in form [name, path]
+                    game.load.image(tuple[0], tuple[1]);
+                });                
+            },
+            create: function () {
+                var level = gamedata.levels[levelIndex];
+
+                level.objects.forEach(function(obj) {
+                    game.add.sprite(obj.x, obj.y, obj.type);
+                });
+                
+                game.debug.text("LEVEL " + (levelIndex+1), 40, 30); 
+                game.debug.text(level.instructions,40,70);
+                game.add.button(300,300,'btn', nextLevel);
+            }
+        };
+        
+        var game = new Phaser.Game(800,600, Phaser.AUTO,'game', state);
+        
+        // add states to phaser (level-0, level-1, level-2 etc.)
+        for (var i = 0; i < gamedata.levels.length; i++) {
+            game.state.add('level-' + i, state);
+        }
+
+        
+    });
+</script>
+
+
+</body>
+</html>

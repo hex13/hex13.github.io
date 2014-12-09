@@ -1,0 +1,36 @@
+{
+    "images": [
+        ["witch", "img/witch.png"],
+        ["cat", "img/cat.png"],
+        ["btn", "img/button.png"]
+    ],
+    "levels": [
+        {
+            "instructions": "do something!",   
+            "objects": [
+                {
+                    "type": "witch", "x": 100, "y": 100
+                },
+                {
+                    "type": "cat", "x": 150, "y": 150
+                }
+                
+            ]
+        },
+        {
+            "instructions": "do something else, because this is level 2 and there are three cats",
+            "objects": [
+                {
+                    "type": "cat", "x": 50, "y": 150
+                },                
+                {
+                    "type": "cat", "x": 150, "y": 150
+                },                
+                {
+                    "type": "cat", "x": 250, "y": 150
+                }                                
+            ]
+        }
+        
+    ]
+}
