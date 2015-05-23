@@ -26,3 +26,9 @@ syntax match Todo /ng-repeat/
 
 nmap <C-x> :set filetype=kot<cr>
 
+" css abbreviations
+nnoremap <leader>p 0/:<CR> c$ 
+nnoremap <leader>h 0/display:<cr>ccdisplay: none<esc>
+
+let Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8_1/bin/ctags'
+
