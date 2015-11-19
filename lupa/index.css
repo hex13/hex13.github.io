@@ -1,0 +1,162 @@
+
+body {
+    background-color: #272822;
+    color: #eee;
+    font-family: monospace;
+    font-size: 16px;
+}
+
+small {
+    font-size: 10px;
+    opacity: 0.1;
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    max-width: 10px;
+    transition: 0.3s all;
+}
+
+small:hover {
+    opacity: 1;
+    max-width: 100%;
+}
+
+
+.flex {
+    display: flex;
+}
+
+.v-owl {
+    color: green;
+}
+
+.v-undefined {
+    color: grey;
+}
+
+.v-sum {
+    color: yellow;
+}
+
+.v-prop {
+    color: cyan;
+}
+
+.v-value{
+    color: #eee;
+}
+
+.v-rule {
+    color: #ffa;
+}
+
+.v-rule:after {
+    content: '}';
+}
+
+button {
+    display: none;
+}
+
+ul, li, .list, .list-vertical, .list-horizontal {
+    list-style-type: none;
+}
+
+.list-vertical > li, .list-horizontal > li {
+    margin-left: 10px;
+}
+
+.list-vertical {
+
+}
+
+.list-horizontal {
+    display: flex;
+    direction: row;
+}
+
+.v-node {
+    position: relative;
+}
+
+/* TODO maybe mixin/extends for horizontal list? */
+.v-decl + .list {
+    display: flex;
+    direction: row;
+}
+
+.node-view-shadow {
+    position: absolute;
+    display: block!important;
+    top: 10px;
+    left: 0px;
+    transition: 1s all;
+}
+
+.node-view-shadow.node-view-shadow-active  {
+    transition: 1s all;
+    transition: 1s all;
+    display: block;
+    top: 100px;
+    left: 100px;
+    z-index: 100;
+}
+
+.example {
+    position: absolute;
+    top: 50px;
+    left: -10px;
+    transition: 0.3s all;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.8);
+    width: 20em;
+    z-index: 100;
+    font-size: 20px;
+}
+
+.example-enter {
+    top: 0px;
+    left: 0;
+    font-size: 3px;
+}
+
+/* TODO use variables (postCSS) instead of repeating code  (e.g. 50px)*/
+.example-enter.example-enter-active {
+    top: 50px;
+    left: -10px;
+    font-size: 20px;
+}
+
+.example-leave {
+    top: 50px;
+    left: -10px;
+    font-size: 20px;
+}
+
+.example-leave.example-leave-active {
+    top: 0px;
+    left: 0;
+    font-size: 3px;
+}
+
+
+
+/*button {*/
+    /*display: none!important;*/
+/*}*/
+
+
+.snippet {
+    font-size: 11px;
+    color: #40A040;
+    opacity: 0.8;
+}
+
+
+.directory {
+    color: darkorange;
+}
+a {
+    text-decoration: none;
+    color: #ee4;
+}
