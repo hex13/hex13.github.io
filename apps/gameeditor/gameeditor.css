@@ -1,0 +1,13 @@
+
+.select-object-btn {
+   border: 1px solid transparent;
+   background: #aaa;
+   border-left: 2px solid #ccc;
+   border-top: 2px solid #ccc;
+   border-right: 2px solid #888;
+   border-bottom: 2px solid #888;
+}
+
+.select-object-btn:hover {
+    border: 2px solid #aaa;
+}
