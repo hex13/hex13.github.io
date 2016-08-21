@@ -184,7 +184,7 @@ engine.run(() => {
         setTimeout(() => {
             // but after 3 seconds
             // we make meteors destroyable anyway
-            pinetree.isImmortal = false;
+            meteor.isImmortal = false;
             // to much objects on screen can cause drop of FPS
         }, 3000);
 
