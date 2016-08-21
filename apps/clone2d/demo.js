@@ -2,12 +2,12 @@
 
 const engine = clone2d({
     gravity: {
-        x: 0, y: 200
+        x: 0, y: 300
     }
 });
 
 engine.createTypesFromImages([
-    'cat.png', 'planet.png', 'pinetree.png'
+    'cat.png', 'planet.png', 'pinetree.png', 'texture.jpg'
 ])
 
 engine.run(() => {
@@ -44,6 +44,8 @@ engine.run(() => {
         y: hook.y + 200,
         vx: 10,
         color: 'white',
+        piecesX: 6,
+        piecesY: 6,
         constraints: {
             lock: rope.points[rope.points.length - 1]
         },
@@ -73,6 +75,8 @@ engine.run(() => {
                 color: 'white',
                 fill: getFloorColor(),
                 kinematic: true,
+                piecesX: 4,
+                piecesY: 4,
             });
         }
     }
@@ -127,6 +131,7 @@ engine.run(() => {
         kinematic: true,
         isImmortal: true,
         rotation: -0.2,
+        piecesX: 5,
         vr: -0.4, // velocity of rotation
     });
 
@@ -193,7 +198,36 @@ engine.run(() => {
             'type': 'pinetree',
             x: e.x,
             y: e.y,
+            piecesY: 4,
             kinematic: true,
         })
     }
+
+    //
+    // world.createObject({
+    //     type: 'texture',
+    //     shape: 'polygon',
+    //     displayAs: 'polygon',
+    //     x: 100,
+    //     y:100,
+    //     r: 40,
+    //     pattern: null,
+    //     render(ctx) {
+    //         if (!this.pattern) {
+    //             this.pattern = ctx.createPattern(this.img, 'repeat');
+    //         }
+    //
+    //         //ctx.fillStyle = this.pattern;
+    //         ctx.fillStyle = 'blue';
+    //         ctx.beginPath();
+    //         ctx.moveTo(0, 0);
+    //         ctx.lineTo(100, 0);
+    //         ctx.lineTo(100, 100);
+    //         ctx.fill();
+    //         //ctx.fillRect(0, 0, 300, 300);
+    //
+    //     }
+    // })
+
+
 });
