@@ -75,8 +75,9 @@ engine.run(() => {
                 color: 'white',
                 fill: getFloorColor(),
                 kinematic: true,
-                piecesX: 4,
-                piecesY: 4,
+                piecesX: 5,
+                piecesY: 5,
+                //isDestroyer: true
             });
         }
     }
