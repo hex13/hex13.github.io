@@ -31666,7 +31666,6 @@ module.exports = function createPhysics(params) {
             });
         }
         if (shape) {
-            console.log('shape',obj,body.shapes)
             body.addShape(shape);
         }
 
