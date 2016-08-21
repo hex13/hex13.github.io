@@ -25,7 +25,6 @@ const createKeyFrames = helpers.createKeyFrames;
 
 
 function createEngine(params) {
-    params = params || {};
     const types = Object.create(null);
     types.default = {
 
@@ -57,7 +56,7 @@ function createEngine(params) {
         })
     }
 
-    const world = createPhysics({types, mouse, onHover, gravity: params.gravity});
+    const world = createPhysics({types, mouse, onHover, gravity: params});
 
     const overlay = createPhysics({types, mouse});
     const hud = createPhysics({types, mouse});
@@ -219,7 +218,7 @@ function createEngine(params) {
         const now = new Date;
         fps++;
         if (now - last > (1000/4)) {
-            lastFps = fps * 4;
+            lastFps = ~~(fps * 1000 / (now - last));
             fps = 0;
             last = now;
 
@@ -584,8 +583,8 @@ exports.modExplode = {
         if (obj.displayAs && allowed.indexOf(obj.displayAs)==-1) return;
 
         let y = 0;
-        const piecesX = options.piecesX || 2;
-        const piecesY = options.piecesY || 2;
+        const piecesX = options.piecesX || obj.piecesX || 2;
+        const piecesY = options.piecesY || obj.piecesY || 2;
         const width = obj.width;
         let last;
         for (let y = 0; y < piecesY; y++) {
@@ -31454,6 +31453,9 @@ module.exports = function createPhysics(params) {
     const world = new p2.World({
         gravity:[params.gravity.x, params.gravity.y]
     });
+    //world.defaultContactMaterial.restitution = 0.9;
+    //world.setGlobalStiffness(500);
+
 
     const model =  createModel(params);
 
@@ -31573,7 +31575,15 @@ module.exports = function createPhysics(params) {
         let shape;
         const displayAs = obj.displayAs || 'box';
 
-        if (obj.shape === 'rope') {
+        if (obj.shape === 'polygon') {
+            //console.log("POLY",body.fromPolygon(obj.points.map(p => [p.x, p.y]))  );
+            shape = new p2.Convex({
+                vertices: obj.points.map(p => [p.x, p.y])
+            });
+            //obj._p2body = body; // engine relies on this variable
+        //    return;
+        }
+        else if (obj.shape === 'rope') {
             // TODO we can't do this way... engine must recognize bodies as bodies (not as invisible parts)
             // because of need of reassigning updates from p2...
 
@@ -31655,7 +31665,10 @@ module.exports = function createPhysics(params) {
                 radius: obj.r || 1
             });
         }
-        body.addShape(shape);
+        if (shape) {
+            console.log('shape',obj,body.shapes)
+            body.addShape(shape);
+        }
 
         obj._p2body = body;
         body._obj = obj;
@@ -31978,10 +31991,18 @@ exports.view = {
 
                         ctx.strokeRect(-obj.width / 2, -obj.height / 2, obj.width, obj.height);
                         ctx.fillRect(-obj.width / 2, -obj.height / 2, obj.width, obj.height);
-                    } else if (displayAs === 'path') {
+                    } else if (displayAs === 'path' || obj.shape === 'polygon') {
                         ctx.lineCap = 'round';
                         if ('color' in obj) ctx.strokeStyle = obj.color;
-                        if ('width' in obj) ctx.lineWidth = obj.width;
+                        if (obj.shape === 'polygon') {
+                            ctx.lineWidth = 1;
+                            if (obj.img) {
+                                const pattern = ctx.createPattern(obj.img, 'repeat');
+                                ctx.fillStyle = pattern;
+                            }
+                        } else {
+                            if ('width' in obj) ctx.lineWidth = obj.width;
+                        }
                         ctx.beginPath();
                         const points = obj.points;
                         ctx.moveTo( points[0].x,  points[0].y);
@@ -31991,7 +32012,7 @@ exports.view = {
                         }
 
                         ctx.stroke();
-
+                        if (obj.shape === 'polygon') ctx.fill();
                     }
                 }
 
