@@ -24,7 +24,8 @@ const helpers = require('./helpers');
 const createKeyFrames = helpers.createKeyFrames;
 
 
-function createEngine() {
+function createEngine(params) {
+    params = params || {};
     const types = Object.create(null);
     types.default = {
 
@@ -56,7 +57,7 @@ function createEngine() {
         })
     }
 
-    const world = createPhysics({types, mouse, onHover});
+    const world = createPhysics({types, mouse, onHover, gravity: params.gravity});
 
     const overlay = createPhysics({types, mouse});
     const hud = createPhysics({types, mouse});
@@ -205,14 +206,15 @@ function createEngine() {
 
     // autochanging coordinates, paths etc.
 
-
-
-    function loop() {
-
+    function renderLoop() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         views.forEach(v => v.render(ctx))
         ctx.fillStyle = 'green'
         ctx.fillText('fps:' + lastFps, 10, 100);
+        requestAnimationFrame(renderLoop);
+    }
+
+    function modelLoop() {
 
         const now = new Date;
         fps++;
@@ -233,11 +235,14 @@ function createEngine() {
         });
         lastSystemTime = systemTime;
 
-        requestAnimationFrame(loop);
+
     }
 
-    requestAnimationFrame(loop);
+    requestAnimationFrame(renderLoop);
 
+    setInterval(() => {
+        modelLoop();
+    }, 16);
 
 
     let lastSystemTime;
@@ -31441,11 +31446,13 @@ const createModel = require('./model');
 const modifiers = require('./modifiers');
 
 module.exports = function createPhysics(params) {
+    params = params || {};
+    params.gravity = params.gravity || {x: 0, y: 0};
     const mouse = params.mouse;
     let hoveredObjects = [];
     const onHover = params.onHover;
     const world = new p2.World({
-        gravity:[0, 300]
+        gravity:[params.gravity.x, params.gravity.y]
     });
 
     const model =  createModel(params);

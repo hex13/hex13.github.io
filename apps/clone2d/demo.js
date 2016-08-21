@@ -1,17 +1,13 @@
 "use strict";
 
-// NOTE
-// 1. this is WIP
-// 2. there are some bad practices here (like setTimeout/setInterval everywhere).
-
 const engine = clone2d({
     gravity: {
-        x: 0, y: 0 // TODO this doesn't work for now
+        x: 0, y: 200
     }
 });
 
 engine.createTypesFromImages([
-    'cat.png', 'planet.png'
+    'cat.png', 'planet.png', 'pinetree.png'
 ])
 
 engine.run(() => {
@@ -171,15 +167,15 @@ engine.run(() => {
             x: Math.random() * 700 + 100,
             y: 0,
             vx: Math.random() * 100 - 50,
-            vy: 700,
+            vy: 400,
             mass: 10,//0.001,
-            width: 30,
-            height: 30,
-            r: 15,
+            width: 40,
+            height: 40,
+            r: 20,
             kinematics: true,
             isDestroyer: true,
             isImmortal:true,
-            ttl: 10 * 1000, // time to live 10 seconds
+            ttl: 1 * 1000, // time to live 10 seconds
         })
         setTimeout(() => {
             // but after 3 seconds
@@ -188,6 +184,16 @@ engine.run(() => {
             // to much objects on screen can cause drop of FPS
         }, 3000);
 
-    }, 2000);
+    }, 1000);
 
+    // plant tree when clicking
+
+    engine.worldView.onMouseDown = function (e) {
+        world.createObject({
+            'type': 'pinetree',
+            x: e.x,
+            y: e.y,
+            kinematic: true,
+        })
+    }
 });
