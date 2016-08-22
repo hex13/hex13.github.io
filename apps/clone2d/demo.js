@@ -49,20 +49,51 @@ engine.run(() => {
         ],
         jointA: hook,
     });
-    const cat = world.createObject({
-        type:'cat',
-        x: hook.x,
-        y: hook.y + 200,
-        vx: 10,
-        color: 'white',
-        piecesX: 4,
-        piecesY: 4,
-        constraints: {
-            lock: rope.points[rope.points.length - 1]
-        },
-    });
 
+    let cat;
+    function createCat() {
+        if (cat && !cat.dead) {
+            return;
+        }
+        cat = world.createObject({
+            type:'cat',
+            x: rope.points[rope.points.length - 1].x + 10,
+            y: rope.points[rope.points.length - 1].y + 40,
+            vx: 10,
+            color: 'white',
+            piecesX: 4,
+            piecesY: 4,
+            constraints: {
+                lock: rope.points[rope.points.length - 1]
+            },
+            onCollision(target) {
+                if (target.isDestroyer) {
+                    this.removeConstraints();
+                    this.constraints = null; // temporary solution
 
+                    for (let i = 0; i < 30; i ++) {
+                        // blood
+                        world.createObject({
+                            shape: 'circle',
+                            displayAs: 'shape',
+                            r: 3,
+                            width:6,height:6,
+                            fill: 'rgba(255,0,0,0.7)',
+                            color: 'rgba(255,0,0,0.7)',
+                            x: this.x,
+                            y: this.y + 50,
+                            ttl: Math.random() * 200 + 300,
+                            vx: Math.random() * 100 - 50,
+                            vy: Math.random() * 100 - 50,
+                        });
+                    }
+                    setTimeout(createCat, 3000);
+                }
+
+            }
+        });
+    }
+    createCat()
     // tiles colored like Github
 
     const COLORS = [
@@ -158,6 +189,9 @@ document.addEventListener('keydown', function (e) {
         fill: '#ccc',
         color: '#aaa',
         rotation: Math.cos(alpha) * 1,
+        onCollision(target) {
+            //target.set({scale: 2});
+        },
         onUpdate() {
             alpha += 0.01
             this.set({
@@ -232,9 +266,6 @@ document.addEventListener('keydown', function (e) {
 
     setTimeout(() => {
         wood.isImmortal = false;
-        cat.removeConstraints();
-        cat.constraints = null; // temporary solution
-
 
         setTimeout(() => {
             engine.modifiers.modExplode.patch(cat);
@@ -252,9 +283,9 @@ document.addEventListener('keydown', function (e) {
         fill:'yellow',
         shape: 'circle',
         mass: 1116,//0.001,
-        width: 30,
-        height: 30,
-        r: 15,
+        width: 40,
+        height: 40,
+        r: 20,
         kinematics: true,
         isDestroyer: true,
         isImmortal:true,
@@ -275,7 +306,7 @@ document.addEventListener('keydown', function (e) {
     }
 
     setTimeout(function launch() {
-        const meteor = world.createObject({
+        const meteor = world.createObject(Object.assign({}, Meteor, {
             material: 0,
             img:'planet',
             fill:'yellow',
@@ -284,15 +315,10 @@ document.addEventListener('keydown', function (e) {
             y: Math.random()*100-60,
             vx: Math.random() * 200 - 100,
             vy: 400,
-            mass: 1116,//0.001,
-            width: 30,
-            height: 30,
-            r: 15,
-            kinematics: true,
             isDestroyer: true,
             isImmortal:true,
             ttl: 3* 1000, // time to live 10 seconds
-        })
+        }))
         meteor.keyframes = [
             {t: 0, opacity: 1},
             {t: 500, opacity: 0.6},
@@ -321,8 +347,6 @@ document.addEventListener('keydown', function (e) {
             r: 15,
             x: e.x,
             y: e.y,
-            width: 30,
-            height: 30,
             piecesX: 8,
             piecesY: 8,
             fill: 'yellow',
