@@ -1,13 +1,17 @@
 "use strict";
 
 const engine = clone2d({
-    gravity: {
-        x: 0, y: 300
+    physics: {
+        gravity: {
+            x: 0, y: 300
+        },
+        restitution: 0.4
+
     }
 });
 
 engine.createTypesFromImages([
-    'cat.png', 'planet.png', 'pinetree.png', 'texture.jpg'
+    'cat.png', 'planet.png', 'pinetree.png', 'texture.jpg',
 ])
 
 engine.run(() => {
@@ -18,18 +22,25 @@ engine.run(() => {
 
     const hook = world.createObject({
         displayAs: 'rect',
-        x: 300,
+        x: 400,
         y: -100,
         height: 16,
         width: 16,
         color: 'white',
         kinematic: true,
         constraints: true, // temporary solution. it will change
+        vx: 100,
+        alpha: 0,
+        onUpdate() {
+            this.alpha += 0.01;
+            this.set({vx: Math.cos(alpha) * 40})
+        }
     });
 
 
     const rope = world.createObject({
         shape: 'rope',
+        displayAs: 'shape',
         x: hook.x,
         y: hook.y,
         points: [
@@ -44,8 +55,8 @@ engine.run(() => {
         y: hook.y + 200,
         vx: 10,
         color: 'white',
-        piecesX: 6,
-        piecesY: 6,
+        piecesX: 4,
+        piecesY: 4,
         constraints: {
             lock: rope.points[rope.points.length - 1]
         },
@@ -64,65 +75,134 @@ engine.run(() => {
 
     const SIZE = 24;
 
-    for (let x = 0; x < 30; x++) {
-        for (let y = 0; y < 4; y++) {
-            world.createObject({
-                displayAs: 'rect',
-                x: 50 + x * SIZE,
-                y: 300 + y * SIZE,
-                height: SIZE,
-                width: SIZE,
-                color: 'white',
-                fill: getFloorColor(),
-                kinematic: true,
-                piecesX: 5,
-                piecesY: 5,
-                //isDestroyer: true
-            });
+    function createTiles() {
+
+        for (let x = 0; x < 30; x++) {
+            for (let y = 0; y < 7; y++) {
+                const isDestroyer = x%3==0;//Math.random()<0.44 && y < 2;// && x < 15 && x > 10;
+                world.createObject({
+                    restitution: 0.1,
+                    img: 'texture',
+                    shape: 'rect',
+                    displayAs: 'shape',
+                    x: 50 + x * SIZE,
+                    y: 300 + y * SIZE,
+                    r: 10,
+                    height: SIZE,
+                    width: SIZE,
+                    color: isDestroyer? 'white': 'white',
+                    fill: false && isDestroyer? 'red' : getFloorColor(),
+                    kinematic: true,
+                    piecesX: 2,//isDestroyer? 4: 4,
+                    piecesY: 2,//isDestroyer? 4: 4,
+                    isDestroyer,
+                    opacity: 0,
+                    scale:0,
+                    keyframes: [
+                        {t:0, opacity: 0, scale: 0, rotation: Math.PI},
+                        {t:2000, opacity: 1, scale: 1, rotation: 0},
+                    ],
+                    resolveExplosionParticle() {
+                        return Object.assign({}, this, {
+                             shape: 'circle',
+                             scale: 0,
+                             //ignore:true,
+                             r: 4, mass: 1,
+                             keyframes: [
+                                 {t: 0, opacity: 0, scale:0},
+                                 {t: 500, opacity: 1, scale:2},
+                                 {t: 2000, opacity: 1, scale: 0}
+                             ],
+                             isDestroyer: Math.random()<0.2,
+                             vy: Math.random()*100-50,
+                             vx: Math.random()*100-50, kinematic: false, ttl: 800,
+                            //gravityScale: 0,
+                        });
+                    },
+                });
+            }
         }
+        setTimeout(createTiles, 16000)
     }
+    createTiles();
 
-    // ground
 
-    const ground = world.createObject({
-        displayAs: 'rect',
-        width: 800,
-        height: 100,
-        x: 400,
-        y: 480,
-        fill: '#252',
-        color: '#265',
+    // walls
+    engine.createType('wall', {
+        img: 'texture',
+        shape: 'rect',
+        displayAs: 'image',
         kinematic: true,
+        material: 0,
         isImmortal: true,
     });
 
+let alpha = 0;
+
+document.addEventListener('keydown', function (e) {
+    if (e.keyCode == 39)
+        alpha -= 0.2;
+    if (e.keyCode == 37)
+        alpha += 0.2;
+
+})
+    const ground = world.createObject({
+        type: 'wall',
+        shape: 'rect',
+        displayAs: 'pattern',
+        width: 600,
+        height: 40,
+        r: 100,
+        x: 400,
+        y: 430,
+        fill: '#ccc',
+        color: '#aaa',
+        rotation: Math.cos(alpha) * 1,
+        onUpdate() {
+            alpha += 0.01
+            this.set({
+                rotation: Math.cos(alpha) * 1
+            })
+        }
+    });
+
     world.createObject({
-        displayAs: 'rect',
+        type: 'wall',
+        width: 800,
+        height: 10,
+        x: 400,
+        y: -100,
+        fill: '#bbc',
+        color: '#aac',
+    });
+
+
+    world.createObject({
+        type: 'wall',
         width: 10,
         height: 540,
         x: 0,
         y: 160,
         fill: '#bbc',
         color: '#aac',
-        kinematic: true,
-        isImmortal: true,
     });
 
     world.createObject({
-        displayAs: 'rect',
+        type: 'wall',
         width: 10,
         height: 540,
         x: 800,
         y: 160,
         fill: '#bbc',
         color: '#aac',
-        kinematic: true,
-        isImmortal: true,
     });
+
+
 
     // rotating wood
     const wood = world.createObject({
-        displayAs: 'rect',
+        displayAs: 'shape',
+        shape: 'rect',
         width: 400,
         height: 20,
         x: 500,
@@ -138,7 +218,9 @@ engine.run(() => {
 
 
     world.createObject({
-        displayAs: 'circle',
+        shape: 'circle',
+        img: 'texture',
+        displayAs: 'shape',
         r: wood.height / 2,
         x: wood.x,
         y: wood.y,
@@ -156,52 +238,105 @@ engine.run(() => {
 
         setTimeout(() => {
             engine.modifiers.modExplode.patch(cat);
-        }, 200)
+        }, 2000)
 
 
-
-    }, 8 * 1000);
+    }, 3 * 5000);
 
 
     // falling trees
 
-    setInterval(() => {
+    const Meteor = {
+        material: 0,
+        img:'planet',
+        fill:'yellow',
+        shape: 'circle',
+        mass: 1116,//0.001,
+        width: 30,
+        height: 30,
+        r: 15,
+        kinematics: true,
+        isDestroyer: true,
+        isImmortal:true,
+        ttl: 3* 1000, // time to live 10 seconds
+        opacity: 1,
+        init() {
+            console.log("INIT", arguments)
+            meteor.keyframes = [
+                {t: 0, opacity: 1},
+                {t: 500, opacity: 0.6},
+                {t: 1000, opacity: 1},
+                {t: 1500, opacity: 0.6},
+                {t: 2500, opacity: 1},
+                {t: 3000, opacity: 0}
+            ];
+
+        },
+    }
+
+    setTimeout(function launch() {
         const meteor = world.createObject({
-            type:'planet',
+            material: 0,
+            img:'planet',
             fill:'yellow',
             shape: 'circle',
             x: Math.random() * 700 + 100,
-            y: 0,
-            vx: Math.random() * 100 - 50,
+            y: Math.random()*100-60,
+            vx: Math.random() * 200 - 100,
             vy: 400,
-            mass: 10,//0.001,
-            width: 40,
-            height: 40,
-            r: 20,
+            mass: 1116,//0.001,
+            width: 30,
+            height: 30,
+            r: 15,
             kinematics: true,
             isDestroyer: true,
             isImmortal:true,
-            ttl: 1 * 1000, // time to live 10 seconds
+            ttl: 3* 1000, // time to live 10 seconds
         })
+        meteor.keyframes = [
+            {t: 0, opacity: 1},
+            {t: 500, opacity: 0.6},
+            {t: 1000, opacity: 1},
+            {t: 1500, opacity: 0.6},
+            {t: 2500, opacity: 1},
+            {t: 3000, opacity: 0}
+        ];
+
         setTimeout(() => {
             // but after 3 seconds
             // we make meteors destroyable anyway
             meteor.isImmortal = false;
             // to much objects on screen can cause drop of FPS
         }, 3000);
-
-    }, 1000);
+        setTimeout(launch, 2000);
+    }, 500);
 
     // plant tree when clicking
 
     engine.worldView.onMouseDown = function (e) {
-        world.createObject({
-            'type': 'pinetree',
+        const meteor = world.createObject(Object.assign({}, Meteor, {
+            img: 'planet',
+            shape: 'circle',
+            displayAs: 'image',
+            r: 15,
             x: e.x,
             y: e.y,
-            piecesY: 4,
-            kinematic: true,
-        })
+            width: 30,
+            height: 30,
+            piecesX: 8,
+            piecesY: 8,
+            fill: 'yellow',
+            kinematic: false,
+            isDestroyer: true,
+        }));
+        meteor.keyframes = [
+            {t: 0, opacity: 1},
+            {t: 500, opacity: 0.6},
+            {t: 1000, opacity: 1},
+            {t: 1500, opacity: 0.6},
+            {t: 2500, opacity: 1},
+            {t: 3000, opacity: 0}
+        ];
     }
 
     //
