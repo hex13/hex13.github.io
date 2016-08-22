@@ -56,7 +56,9 @@ function createEngine(params) {
         })
     }
 
-    const world = createPhysics({types, mouse, onHover, gravity: params.gravity});
+    const world = createPhysics(
+        Object.assign({types, mouse, onHover}, params.physics)
+    );
 
     const overlay = createPhysics({types, mouse});
     const hud = createPhysics({types, mouse});
@@ -499,7 +501,6 @@ const World = {
     },
 
     createObject(data) {
-
         //const resolvedObject = resolveObject(params)
         // resolveData etc.
         const params = resolveParams(data);
@@ -514,6 +515,10 @@ const World = {
         if (!aborted) {
             Object.assign(obj, params);///???? TODO this assigns only own properties :/
 
+        }
+
+        if (obj.img && (typeof obj.img === 'string' || obj.img instanceof String)) {
+            obj.img = types[obj.img].img;
         }
 
         createKeyFrames(obj);
@@ -569,12 +574,51 @@ exports.modOpacity = {
 };
 
 const EMPTY = {};
+
+function resolveExplosionParticle(obj, params) {
+    const {piecesX, piecesY, sx, sy, ttl} = params;
+    let result;
+    if (obj.resolveExplosionParticle) {
+        result = obj.resolveExplosionParticle(params);
+        result.ignore = true;
+        return result;
+    }
+    return {
+        type: obj.type,
+        displayAs: obj.displayAs,
+        shape: obj.shape,
+        img: obj.img,
+        r: obj.width/piecesX,
+        width: obj.width / piecesX,
+        height: obj.height / piecesY,
+        mass: 0.01, //0.09,
+        color: obj.color,
+        fill: obj.fill,
+        x: obj.x + sx,
+        y: obj.y + sy,
+        sx: sx,
+        sy: sy,
+        fill: obj.fill,
+        color: obj.color,
+        skinematic: true,
+        points: obj.points,
+        ttl: ttl,
+        opacity: Math.max(0, ttl/100),
+        ignore: true,
+        isDestroyer: obj.isDestroyer,
+        keyframes: [
+            {t: 0, opacity: 1},
+            {t: 3000, opacity: 0}
+        ]
+    };
+}
+
 exports.modExplode = {
     patch(obj, ttl = 2000, options) {
         options = options || EMPTY;
        if (obj.exploded) return;
        if (ttl < 400) return;
-        const allowed = ['box', 'image', 'rect', 'circle'];
+        const allowed = ['box', 'image', 'rect', 'circle', 'shape'];
         if (obj.joinA || obj.joinB) return;
         if (obj.constraints) return;
         if (obj.shape == 'rope' || obj.type == 'rope') return;
@@ -592,33 +636,11 @@ exports.modExplode = {
                 const sx = x * obj.width / piecesX;
                 const sy = y * obj.height / piecesY;
                 const angle = Math.atan2(y-piecesY/2, x-piecesX/2);
-                const curr = obj.model.createObject({
-                    type: obj.type,
-                    displayAs: obj.displayAs,
-                    img: obj.img,
-                    r: width/piecesX,
-                    width: obj.width / piecesX,
-                    height: obj.height / piecesY,
-                    mass: 0.01, //0.09,
-                    color: obj.color,
-                    fill: obj.fill,
-                    x: obj.x + sx,
-                    y: obj.y + sy,
-                    sx: sx,
-                    sy: sy,
-                    fill: obj.fill,
-                    color: obj.color,
-                    skinematic: true,
-                    points: obj.points,
-                    ttl: ttl,
-                    opacity: Math.max(0, ttl/100),
-                    ignore: true,
-                    isDestroyer: obj.isDestroyer,
-                    keyframes: [
-                        {t: 0, opacity: 1},
-                        {t: 3000, opacity: 0}
-                    ]
-                });
+                const curr = obj.model.createObject(
+                    resolveExplosionParticle(obj, {
+                        piecesX, piecesY, sx, sy, ttl
+                    })
+                );
                 if (obj.isDestroyer) {
 
                 }
@@ -31453,7 +31475,16 @@ module.exports = function createPhysics(params) {
     const world = new p2.World({
         gravity:[params.gravity.x, params.gravity.y]
     });
-    //world.defaultContactMaterial.restitution = 0.9;
+    const materials = [];
+    for (let i = 0; i < 4; i++) {
+        materials.push(new p2.Material());
+    }
+    world.addContactMaterial(
+        new p2.ContactMaterial(materials[0], materials[0], {
+            restitution: 0.9,
+        })
+    );
+    //world.defaultContactMaterial.restitution = 'restitution' in params? params.restitution : 0.5;
     //world.setGlobalStiffness(500);
 
 
@@ -31564,8 +31595,12 @@ module.exports = function createPhysics(params) {
             angularVelocity: obj.vr || 0,
             velocity: [obj.vx || 0, obj.vy || 0],
             angularDamping: 0.8,
-            allowSleep: false,collisionResponse:true
+            allowSleep: false,collisionResponse:true,
+            gravityScale: 'gravityScale' in obj? obj.gravityScale : 1,
         });
+        body.damping = 0;
+        body.angularDamping = 0;
+
 
 
 
@@ -31612,7 +31647,8 @@ module.exports = function createPhysics(params) {
 
                 for (let j = 0; j < stepCount; x+= dx, y+= dy, j++) {
                     const link = this.createObject({
-                        displayAs: 'circle',
+                        shape: 'circle',
+                        displayAs: 'shape',
                         r: width/2,
                         width: width,
                         height: width,
@@ -31656,7 +31692,7 @@ module.exports = function createPhysics(params) {
             modifiers.modExplode.patch(obj, this);
             return
         }
-        else if (displayAs === 'box' || displayAs === 'rect' ||  displayAs === 'text') {
+        else if (obj.shape === 'rect' || displayAs === 'box' || displayAs === 'rect' ||  displayAs === 'text') {
             shape = new p2.Box({
                 width: 'width' in obj? obj.width : 100,
                 height: 'height' in obj? obj.height : 100
@@ -31667,6 +31703,9 @@ module.exports = function createPhysics(params) {
             });
         }
         if (shape) {
+            if ('material' in obj) {
+                shape.material = materials[obj.material];
+            }
             body.addShape(shape);
         }
 
@@ -31915,6 +31954,7 @@ exports.view = {
                 const x = obj.x;
                 const y = obj.y;
                 const displayAs = obj.displayAs || 'image';
+                const scale = obj.scale || 1;
                 //ctx.globalAlpha = typeof obj.opacity == 'number'? obj.opacity : 1;
                 ctx.globalAlpha = typeof obj.opacity == 'number'? obj.opacity : 1;
 
@@ -31936,11 +31976,17 @@ exports.view = {
                 ctx.rotate(rotation);
                 ctx.translate(-center.x, -center.y);
                 ctx.translate(obj.x, obj.y);
+                if (scale != 1) ctx.scale(scale, scale);
 
                 // ctx.translate(-center.x, -center.y);
                 // ctx.translate(center.x, center.y);
                 if ('fill' in obj) {
                     ctx.fillStyle = obj.fill;
+                }
+
+                if (obj.displayAs == 'pattern') {
+                    const pattern = ctx.createPattern(obj.img, 'repeat');
+                    ctx.fillStyle = pattern;
                 }
 
 
@@ -31964,8 +32010,7 @@ exports.view = {
                         ctx.restore();
 
                     } else if (displayAs === 'image') {
-                        const scale = obj.scale || 1;
-                        const w = obj.width * scale;
+                        const w = obj.width * scale; // TODO!!!! we're scaling globally now!!!
                         const h = obj.height * scale;
                         if (obj.showBoundingRect) {
                             ctx.save();
@@ -31978,14 +32023,15 @@ exports.view = {
                         } else {
                             ctx.drawImage(obj.img, -w/2, -h/2, w, h);
                         }
-                    } else if (displayAs === 'circle') {
+                    } else if (obj.shape === 'circle') {
                         ctx.beginPath();
                         ctx.arc(0, 0, obj.r, 0, Math.PI * 2, false);
                         ctx.stroke();
                         ctx.fill();
-                    } else if (displayAs === 'rect') {
+                    } else if (obj.shape === 'rect' || displayAs === 'rect') {
                         //ctx.fillRect(~~obj.x, ~~obj.y, obj.width, obj.height);
                         //ctx.setLineDash([10, 10]);
+
 
                         ctx.lineWidth = 2;
 
@@ -31996,10 +32042,10 @@ exports.view = {
                         if ('color' in obj) ctx.strokeStyle = obj.color;
                         if (obj.shape === 'polygon') {
                             ctx.lineWidth = 1;
-                            if (obj.img) {
-                                const pattern = ctx.createPattern(obj.img, 'repeat');
-                                ctx.fillStyle = pattern;
-                            }
+                            // if (obj.img) {
+                            //     const pattern = ctx.createPattern(obj.img, 'repeat');
+                            //     ctx.fillStyle = pattern;
+                            // }
                         } else {
                             if ('width' in obj) ctx.lineWidth = obj.width;
                         }
