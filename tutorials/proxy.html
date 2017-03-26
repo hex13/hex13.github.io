@@ -1,0 +1,62 @@
+<!doctype HTML>
+
+
+    <meta charset="utf-8">
+    <style>
+       body {
+           font-family: sans-serif;
+       }
+       p, pre {margin:0}
+    </style>
+    <body>
+    
+<h1>How to make proxy object in ES6?</h1>
+<h3> Proxy is JS objects which can redirect itself to some other object. How does it work? Well. Let's create normal object first with some properties. </h3>
+<div style="margin:20px;background:#eee;padding:8px">
+<pre style="color:green">const obj = {&nbsp;</pre>
+<pre style="color:green">    a: 10,&nbsp;</pre>
+<pre style="color:green">    b: 20&nbsp;</pre>
+<pre style="color:green">};&nbsp;</pre>
+<pre style="color:green">&nbsp;</pre>
+</div>
+<h3> Now we'll create empty proxy which will wrap this object. First parameter is target object, second parameter is handler (we put empty object there for now) </h3>
+<div style="margin:20px;background:#eee;padding:8px">
+<pre style="color:#222">const obj = {&nbsp;</pre>
+<pre style="color:#222">    a: 10,&nbsp;</pre>
+<pre style="color:#222">    b: 20&nbsp;</pre>
+<pre style="color:#222">};&nbsp;</pre>
+<pre style="color:#222">&nbsp;</pre>
+<pre style="color:green">const proxy = new Proxy(obj, {});&nbsp;</pre>
+<pre style="color:green">&nbsp;</pre>
+</div>
+<h3> We write console.log. Notice that this proxy doesn't do anything for now and just returns original value. </h3>
+<div style="margin:20px;background:#eee;padding:8px">
+<pre style="color:#222">const obj = {&nbsp;</pre>
+<pre style="color:#222">    a: 10,&nbsp;</pre>
+<pre style="color:#222">    b: 20&nbsp;</pre>
+<pre style="color:#222">};&nbsp;</pre>
+<pre style="color:#222">&nbsp;</pre>
+<pre style="color:#222">const proxy = new Proxy(obj, {});&nbsp;</pre>
+<pre style="color:#222">&nbsp;</pre>
+<pre style="color:green">console.log(proxy.a);&nbsp;</pre>
+<pre style="color:green">&nbsp;</pre>
+</div>
+<h3> Now we write `get` method in proxy handler. Now run program. It should write `13` because now proxy handles takes original value and adds 3 to it. </h3>
+<div style="margin:20px;background:#eee;padding:8px">
+<pre style="color:#222">const obj = {&nbsp;</pre>
+<pre style="color:#222">    a: 10,&nbsp;</pre>
+<pre style="color:#222">    b: 20&nbsp;</pre>
+<pre style="color:#222">};&nbsp;</pre>
+<pre style="color:#222">&nbsp;</pre>
+<pre style="color:red">const proxy = new Proxy(obj, {});&nbsp;</pre>
+<pre style="color:green">const proxy = new Proxy(obj, {&nbsp;</pre>
+<pre style="color:green">    get(obj, prop) {&nbsp;</pre>
+<pre style="color:green">        return obj[prop] + 3;&nbsp;</pre>
+<pre style="color:green">    }&nbsp;</pre>
+<pre style="color:green">});&nbsp;</pre>
+<pre style="color:#222">&nbsp;</pre>
+<pre style="color:#222">console.log(proxy.a);&nbsp;</pre>
+<pre style="color:#222">&nbsp;</pre>
+</div>
+<h4>That's all, folks! For questions you can write me here: <a href="https://twitter.com/hex13code">https://twitter.com/hex13code</a></h4>
+</body>
