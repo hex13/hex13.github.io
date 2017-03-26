@@ -19,6 +19,9 @@
 <pre style="color:green">};&nbsp;</pre>
 <pre style="color:green">&nbsp;</pre>
 </div>
+<h4 style='margin:20px'>output:</h4>
+<pre style='padding:4px;margin:20px;width:400px;background:#444;color:#ddd'>
+</pre>
 <h3> Now we'll create empty proxy which will wrap this object. First parameter is target object, second parameter is handler (we put empty object there for now) </h3>
 <div style="margin:20px;background:#eee;padding:8px">
 <pre style="color:#222">const obj = {&nbsp;</pre>
@@ -29,6 +32,9 @@
 <pre style="color:green">const proxy = new Proxy(obj, {});&nbsp;</pre>
 <pre style="color:green">&nbsp;</pre>
 </div>
+<h4 style='margin:20px'>output:</h4>
+<pre style='padding:4px;margin:20px;width:400px;background:#444;color:#ddd'>
+</pre>
 <h3> We write console.log. Notice that this proxy doesn't do anything for now and just returns original value. </h3>
 <div style="margin:20px;background:#eee;padding:8px">
 <pre style="color:#222">const obj = {&nbsp;</pre>
@@ -41,6 +47,10 @@
 <pre style="color:green">console.log(proxy.a);&nbsp;</pre>
 <pre style="color:green">&nbsp;</pre>
 </div>
+<h4 style='margin:20px'>output:</h4>
+<pre style='padding:4px;margin:20px;width:400px;background:#444;color:#ddd'>
+10
+</pre>
 <h3> Now we write `get` method in proxy handler. Now run program. It should write `13` because now proxy handles takes original value and adds 3 to it. </h3>
 <div style="margin:20px;background:#eee;padding:8px">
 <pre style="color:#222">const obj = {&nbsp;</pre>
@@ -58,5 +68,9 @@
 <pre style="color:#222">console.log(proxy.a);&nbsp;</pre>
 <pre style="color:#222">&nbsp;</pre>
 </div>
+<h4 style='margin:20px'>output:</h4>
+<pre style='padding:4px;margin:20px;width:400px;background:#444;color:#ddd'>
+13
+</pre>
 <h4>That's all, folks! For questions you can write me here: <a href="https://twitter.com/hex13code">https://twitter.com/hex13code</a></h4>
 </body>
