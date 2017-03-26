@@ -7,11 +7,34 @@
            font-family: sans-serif;
        }
        p, pre {margin:0}
+
+       @keyframes move {
+           0% {
+               background-position: 0 10px;
+
+           }
+           50% {
+               background-position: 0 20px;
+               background-image:repeating-linear-gradient(to bottom, #707, #707 10%, #c4a 11%, #707 42%);
+           }
+       }
+       svg {
+           background-image:repeating-linear-gradient(to bottom, #707, #707 10%, #c4a 11%, #707 12%);
+
+           animation: move 4s infinite alternate;
+       }
+       circle {
+           animation: move 1s infinite;
+       }
+       circle:hover {
+           opacity: 0.3;
+       }
+
     </style>
     <body>
 
 <h1>How to make proxy object in ES6?</h1>
-<svg style="font-family:sans-serif;background:repeating-linear-gradient(to bottom, #707, #707 10%, #c4a 11%, #707 12%);backgrounda:#eed;height:200px;width:100%" viewBox="-100,-100, 200, 200">
+<svg style="font-family:sans-serif;backgrounda:#eed;height:200px;width:100%" viewBox="-100,-100, 200, 200">
     <circle stroke="#F92672" fill="#272822" cx="-200" cy="0" r="50"/>
   <text style="fill:#66D9EF" x="-200" y="0" text-anchor="middle" r="50">code</text>
     <circle fill="#ed3" cx="0" cy="0" r="50"/>
