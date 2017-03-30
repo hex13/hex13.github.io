@@ -1,0 +1,185 @@
+<!doctype HTML>
+<meta charset="utf-8">
+<body>
+<style>
+.desc {
+    color: #666;
+}
+body {
+    font-family:sans-serif;
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;
+
+}
+
+.description {
+}
+
+.description code {
+    color: #ecf;
+    padding: 4px;
+    margin: 0px;
+    border-radius: 4px;
+    background: #444;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+}
+
+.description .comment {
+    color: #777;
+}
+
+.description em {
+    color: #44a;
+}
+
+.description .warn {
+    background-color: #dd0;
+    color: #111;
+
+}
+
+.description .error {
+    background-color: #c33;
+}
+
+.snippet {
+    border: 1px dotted gray;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+h1 {
+    text-shadow: 1px 1px 2px  rgba(200, 100, 200, 0.5);
+    background: linear-gradient(to bottom, #eee, #ccc);
+    display: inline-block;
+    box-shadow: 1px 1px black, 0 10px 4px rgba(0, 0, 100, 0.4);
+    border-radius: 16px;
+    padding: 4px;
+    font-family: "CopperPlate", fantasy, sans-serif;
+
+    animation: h1 15s infinite;
+    margin-bottom: 40px;
+}
+
+@keyframes h1 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-3deg);
+    }
+
+    50% {
+        transform: rotate(0deg);
+    }
+
+    75% {
+        transform: rotate(3deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+
+}
+
+marquee {
+    font-family: "Comic Sans MS", sans-serif;
+    background: linear-gradient(to bottom, rgba(0, 0, 100, 0.4), #fff);
+    border-radius: 8px;
+}
+
+</style>
+
+
+
+<section class="description">
+<marquee>🐿🐢  JavaScript is easy. 👻 💾 🖥 this tutorial is UNDER CONSTRUCTION and there is WORK IN PROGRESS</marquee>
+<center><h1><marquee1>Variables in JavaScript (ES6)</marquee1></h1></center>
+<p>Variables are just names for things in our programs. </p>
+
+<p>If you have number, text or some other object, you can name it by declaring variable.</p>
+
+<p>Naming something will allow you to use it later.</p>
+
+<p> Let assume we have number <code>2</code>. If we name it <code>a</code>, then we can write <code>a + a</code> instead of <code>2 + 2</code>.
+
+<section class="snippet">
+    <p><code>let a = 2;</code><em class="comment"> // let assume that a equals 2</em></p>
+    <p><code>a + a;</code><em class="comment"> // it will equal 4</em>  </p>
+</section>
+
+<p>In JS we can declare variables by writing <code>var</code>, <code>let</code> or <code>const</code></p>
+
+<p>Historically only <code>var</code> existed in JS. <code>var</code> declares variable which is visible <em>inside the function</em>.</p>
+
+<p>Now we have also <code>let</code> which declares variable visible <em>inside the block</em> (blocks are areas of code enclosed usually by <code>{</code> and <code>}</code>).</p>
+
+<p>We have also <code>const</code> which is similar to <code>let</code> (it also declares variable visible <em>inside the block</em>), but <code>const</code> is more constant.</p>
+
+<p>Let's compare:</p>
+
+<p>With <code>let</code> we can reassign different values to variables, even after declaring:</p>
+
+<section class="snippet">
+    <p><code>let a = 2;</code> <em class="comment"> // we declare by using <code>let</code></em></p>
+    <p><code>a = 10;</code> <em class="comment">// reassign variable to 10</em></p>
+    <p><code>a + a;</code> <em class="comment">// this won't display 4 but 20</em></p>
+</section>
+
+<p>Using <code>const</code> won't allow you for that:</p>
+
+<section class="snippet">
+    <p><code>let a = 2;</code> <em class="comment"> // we declare by using <code>const</code></em></p>
+    <p><code>a = 10;</code> <em class="comment">// <code class="error">Uncaught TypeError: Assignment to constant variable.</code></em></p>
+    <p><code>a + a;</code> <em class="comment">// <code class="warn">this line won't even run because of error in previous line.</code></em></p>
+</section>
+
+<p>So basically: </p>
+<p><code>let</code> gives you more freedom in reassigning variables when you want.</p>
+<p>on the other hand <code>const</code> gives you more safety - it ensures that variable cannot be reassigned multiple times (which can be error prone).</p>
+
+<p>Although even variables declared with <code>const</code> can change sometimes. </p>
+<p>For example when used with arrays (arrays are lists of things and are usually enclosed by <code>[</code> and <code>]</code> ).</p>
+
+<section class="snippet">
+    <p><code>const animals = ['cat', 'dog', 'hamster'];</code> <em class="comment"> // we declare array of animals, using <code>const</code></em></p>
+    <p><code>animals.push('turtle');</code> <em class="comment"> // <em>push</em> (i.e. add) item <code>'turtle'</code> to the <code>animals</code></em></p>
+    <p><code>console.log(animals);</code> <em class="comment"> // we <em>log</em> <code>animals</code> in the <em>console</em></em></p>
+</section>
+
+<p>as you may see program logged: <code>["cat", "dog", "hamster", "turtle"]</code>. So array changed! Despite of declaring with <code>const</code>.</p>
+
+Although we are still protected from reassigning with <code>=</code>
+
+<section class="snippet">
+    <p><code>const animals = ['cat', 'dog', 'hamster'];</code> <em class="comment"> // we declare array of animals, using <code>const</code></em></p>
+    <p><code>animals = ['cat', 'dog', 'hamster', 'turtle'];</code><em class="comment>"> // <code class="error">Uncaught TypeError: Assignment to constant variable.</code></em></p>
+</section>
+
+<p>That's why is called <code>const</code> after all. Objects (like arrays) <em>can change internally but you can't reassign <em>const</em> variable to whole new value.</em></p>
+
+<h3>What are scopes?</h3>
+
+<p>We said before that variables declared with <code>const</code> and <code>let</code> are visible <em>inside the block</em> and variables declared with <code>var</code> are visible <em>inside the function</em></p>
+
+<p>But what this really means? Let's see.</p>
+
+<p>First, block scope. In ES6 each block (usually enclosed by <code>{</code> and <code>}</code>) define its own scope. </p>
+
+<p>Every variable declared with <code>const</code> or <code>let</code> is visible only in block that it was created in (and in children blocks). Look into interactive example</p>
+
+<p>Hover over editor and block scope under mouse cursor will be highlighted.</p>
+
+<script src="bundle.js"></script>
+</section>
+
+<h1>...</h1><br>
+<h1 style="background:yellow">This part of tutorial is UNDER CONSTRUCTION!!!!!1</h1>
+
+<h1  style="background:yellow">WORK IN PROGRESSS</h1>
+<h1  style="background:yellow">check this website later.</h1>
+
+<p>Well. As you can see this tutorial is not done yet. But you can check it later.</p>
+</body>
