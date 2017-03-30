@@ -160,17 +160,17 @@ Although we are still protected from reassigning with <code>=</code>
 
 <p>That's why is called <code>const</code> after all. Objects (like arrays) <em>can change internally but you can't reassign <em>const</em> variable to whole new value.</em></p>
 
-<h3>What are scopes?</h3>
+<h3 id="scopes">What are scopes?</h3>
 
 <p>We said before that variables declared with <code>const</code> and <code>let</code> are visible <em>inside the block</em> and variables declared with <code>var</code> are visible <em>inside the function</em></p>
 
-<p>But what this really means? Let's see.</p>
+<p>But what does this really mean? Let's see.</p>
 
 <p>First, block scope. In ES6 each block (usually enclosed by <code>{</code> and <code>}</code>) define its own scope. </p>
 
 <p>Every variable declared with <code>const</code> or <code>let</code> is visible only in block that it was created in (and in children blocks). Look into interactive example</p>
 
-<p>Hover over editor and block scope under mouse cursor will be highlighted.</p>
+<p>Hover over editor and two kinds of scopes (block scope and function scope) under mouse cursor will be highlighted.</p>
 
 <script src="bundle.js"></script>
 </section>
