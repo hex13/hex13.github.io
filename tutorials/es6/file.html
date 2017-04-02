@@ -1,0 +1,138 @@
+<!doctype HTML>
+<meta charset="utf-8">
+<body>
+<style>
+.desc {
+    color: #666;
+}
+body {
+    font-family:sans-serif;
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;
+
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.link {
+    font-size: 24px;
+    background: #7da;
+    padding: 4px;
+    display:inline-block;
+    border-radius: 4px;
+    margin: 4px;
+    box-shadow: 1px 1px 1px 3px rgba(0, 100, 0, 0.4);
+    transition: 0.3s all;
+    cursor:pointer;
+}
+
+.link:hover {
+    box-shadow: 0 0 3px 4px #070;
+    color: #440;
+}
+.description {
+}
+
+.description code {
+    color: #ecf;
+    padding: 4px;
+    margin: 0px;
+    border-radius: 4px;
+    background: #444;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+}
+
+.description .comment {
+    color: #777;
+}
+
+.description em {
+    color: #44a;
+}
+
+.description .warn {
+    background-color: #dd0;
+    color: #111;
+
+}
+
+.description .error {
+    background-color: #c33;
+}
+
+.snippet {
+    border: 1px dotted gray;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+h1 {
+    text-shadow: 1px 1px 2px  rgba(200, 100, 200, 0.5);
+    background: linear-gradient(to bottom, #eee, #ccc);
+    display: inline-block;
+    box-shadow: 1px 1px black, 0 10px 4px rgba(0, 0, 100, 0.4);
+    border-radius: 16px;
+    padding: 4px;
+    font-family: "CopperPlate", fantasy, sans-serif;
+
+    animation: h1 15s infinite;
+    margin-bottom: 40px;
+}
+
+@keyframes h1 {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    25% {
+        transform: rotate(-3deg);
+    }
+
+    50% {
+        transform: rotate(0deg);
+    }
+
+    75% {
+        transform: rotate(3deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+
+}
+
+marquee {
+    font-family: "Comic Sans MS", sans-serif;
+    background: linear-gradient(to bottom, rgba(0, 0, 100, 0.4), #fff);
+    border-radius: 8px;
+}
+
+</style>
+
+
+
+<section class="description">
+
+<center><h1><marquee1>What is in JavaScript file?</marquee1></h1></center>
+<h3>Interactive demo</h3>
+<script src="bundle3.js"></script>
+
+
+<section style="color:#ccc;border-radius: 8px 8px 0 0 ; background: #455;padding: 8px;line-height:1.2em;box-shadow: inset 1px 1px 2px 3px rgba(200,200,200,0.2)">
+<div style="font-weight:bold">mode:</div>
+<label>hints<input checked="true" onclick="window.mode='hints'" name="mode" type="radio"></label>
+<label>scopes<input onclick="window.mode='scopes'" name="mode" type="radio"></label>
+</section>
+
+</section>
+
+
+
+<div style="margin-top:20px;font-size:30px;">Other demos/tutorials:</div>
+<div class="link"><a href="https://hex13.github.io/tutorials/es6/variables">Variables in JavaScript (ES6)</a></div><br>
+<div class="link"><a href="http://hex13.github.io/tutorials/proxy">How to make proxy object in ES6?</a></div><br>
+</body>
