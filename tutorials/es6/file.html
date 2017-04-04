@@ -124,9 +124,12 @@ marquee {
 
 <section style="color:#ccc;border-radius: 8px 8px 0 0 ; background: #455;padding: 8px;line-height:1.2em;box-shadow: inset 1px 1px 2px 3px rgba(200,200,200,0.2)">
 <div style="font-weight:bold">mode:</div>
-<label>hints<input checked="true" onclick="window.mode='hints'" name="mode" type="radio"></label>
+<label>hints<input onclick="window.mode='hints'" name="mode" type="radio"></label>
 <label>scopes<input onclick="window.mode='scopes'" name="mode" type="radio"></label>
-<label>variables<input onclick="window.mode='vars'" name="mode" type="radio"></label>
+<label>variables<input checked="true" onclick="window.mode='vars'" name="mode" type="radio"></label>
+<script>
+mode = 'vars';
+</script>
 </section>
 
 </section>
