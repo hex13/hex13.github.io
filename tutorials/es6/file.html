@@ -11,7 +11,7 @@
   -                    ga('send', 'pageview');
   -
   -                </script>
-    
+
 <style>
 .desc {
     color: #666;
@@ -130,22 +130,27 @@ marquee {
 
 <center><h1><marquee1>What is in JavaScript file?</marquee1></h1></center>
 <h3>Interactive demo</h3>
-<script src="bundle3.js?a=1234"></script>
+<script src="bundle3es5.js?a=w2"></script>
 
 
 <section style="color:#ccc;border-radius: 8px 8px 0 0 ; background: #455;padding: 8px;line-height:1.2em;box-shadow: inset 1px 1px 2px 3px rgba(200,200,200,0.2)">
 <div style="font-weight:bold">mode:</div>
-<!--<label>hints<input onclick="window.mode='hints'" name="mode" type="radio"></label> -->
+<label>hints<input checked="true" onclick="window.mode='hints'" name="mode" type="radio"></label>
 <label>scopes<input onclick="window.mode='scopes'" name="mode" type="radio"></label>
-<label>variables<input checked="true" onclick="window.mode='vars'" name="mode" type="radio"></label>
+<label>variables<input onclick="window.mode='vars'" name="mode" type="radio"></label>
 <script>
-mode = 'vars';
+mode = 'hints';
 </script>
 </section>
 
 </section>
 
-
+<div style="display:flex;flex-direction:column">
+<button class="link" onclick="run()">Run</button>
+<svg id="scene" style="width:400px;height:400px;background:black;fill:grey;stroke:white;transition: 1s all">
+    <path d="M 0 0 l 10 10" />
+</svg>
+</div>
 
 <div style="margin-top:20px;font-size:30px;">Other demos/tutorials:</div>
 <div class="link"><a href="https://hex13.github.io/tutorials/es6/variables">Variables in JavaScript (ES6)</a></div><br>
