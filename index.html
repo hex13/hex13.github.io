@@ -12,7 +12,7 @@ body {
   background: linear-gradient(to bottom, #080415, #190D40);
   background-attachment:fixed;
   color: #fff;
-  text-shadow: 0px 0px 8px black;
+
   font-size: 16px;
 }
 .grid {
@@ -54,7 +54,8 @@ body {
 
 }
 
-.desc {
+
+.contact, .desc {
   grid-area: desc;
   padding: 2em;
   border-radius: 2px;
@@ -65,6 +66,47 @@ body {
   margin-left: 2em;
 }
 
+.desc {
+    background: #010109;
+}
+
+.contact {
+    vertical-align:top;
+    font-size: 1em;
+
+}
+.contact label {
+    font-size: 1em;
+}
+.contact input, .contact textarea  {
+    sanimation: input 0.8s infinite alternate ease-in;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    border-radius: 2px;
+    padding: 0.5em;
+}
+
+.contact [type=submit] {
+    width:100%;
+    font-size: 0.8em;
+    background: rgba(255,255,255,0.2);
+}
+
+@keyframes input {
+    0% {
+        box-shadow: 0 0 3px 4px rgba(255,255,255,0.1);
+    }
+    100% {
+        box-shadow: 0 0 3px 4px rgba(255,255,255,0);
+    }
+}
+
+.contact [name=message] {
+    font-size:inherit;margin-top:1em;padding: 0.5em;vertical-align:top;width:20em;height:8em;
+}
+
+
 
 @keyframes desc {
     0% {
@@ -73,7 +115,7 @@ body {
 
     }
     100% {
-        transform: scale(0.96);
+        transform: scale(0.98);
 
     }
 
@@ -228,6 +270,11 @@ filtser:invert(1);
         padding: 1em;
     }
 
+    .contact [name=message] {
+        width:16em;height:18em;
+    }
+
+
     .grid {
       display: grid;
       grid-template-areas: "game game desc"
@@ -265,6 +312,10 @@ filtser:invert(1);
       grid-template-rows: repeat(4, 10em);
       grid-gap: 0.1em;
   }
+  .contact [name=message] {
+      width:14em;height:20em;
+  }
+
   .desc {
       margin-left: 0;
 
@@ -350,6 +401,13 @@ filtser:invert(1);
     <div class="overlay game-overlay">GAMES</div>
     <div class="overlay code-overlay">CODE</div>
     <div class="overlay writing-overlay">WRITING</div>
-
+    <form class="contact" action="https://formspree.io/taki.litwa@gmail.com" method="POST">
+        <h2>Contact</h2>
+        <label>E-mail: <input name="email" type="email" /></label>
+        <br><br>
+        <label>Message:<br><textarea  name="message"></textarea></label>
+        <br><br>
+        <input type="submit">
+    </form>
   </div>
 </body>
