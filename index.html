@@ -10,6 +10,7 @@ body {
   padding: 8em 8em;
   background: #215;
   background: linear-gradient(to bottom, #080415, #190D40);
+  background: linear-gradient(to bottom, #060410, #080820);
   background-attachment:fixed;
   color: #fff;
 
@@ -45,11 +46,15 @@ body {
 @keyframes app {
     0% {
         transform: scale(1);
-
+        opacity: 0.9;
+    }
+    20% {
+        opacity: 0.9;
     }
     100% {
         transform: scale(0.96);
 
+        opacity:0.3;
     }
 
 }
@@ -61,9 +66,12 @@ body {
   border-radius: 2px;
   border: 1px solid rgba(100,100,200,0.8);
   border: 2px solid rgba(100,100,255,0.4);
+  border: 1px solid rgba(85,200,255,0.3);
   background: rgba(0,0,0,0.4);
   animation: desc 0.8s infinite alternate ease-in-out;
-  margin-left: 2em;
+  transform: perspective(400px) rotateX(4deg) translateY(-20px);
+  margin-left: 1em;
+  border-radius:0px;
 }
 
 .desc {
@@ -95,6 +103,10 @@ body {
     background: rgba(255,255,255,0.2);
 }
 
+.contact [type=submit]:hover {
+    box-shadow: 0 0 4px 6px rgba(100,150,255,0.1)
+}
+
 @keyframes input {
     0% {
         box-shadow: 0 0 3px 4px rgba(255,255,255,0.1);
@@ -112,13 +124,13 @@ body {
 
 @keyframes desc {
     0% {
-        transform: scale(1);
-
+        transform: perspective(400px) rotateX(4deg) translateY(-20px);
+        box-shadow: 0 0 4px rgba(80, 150, 200, 0.8);
 
     }
     100% {
-        transform: scale(0.98);
-
+        transform: perspective(400px) rotateX(4deg) translateY(-20px) scale(1.01);
+        box-shadow: 0 0 4px rgba(80, 150, 200, 0.2);
     }
 
 }
@@ -187,7 +199,9 @@ filtser:invert(1);
 }
 
 .game-overlay, .code-overlay, .writing-overlay {
-    transform: perspective(400px) translateZ(30px) rotateZ(0) rotateX(20deg);
+    transform: perspective(400px) translateZ(30px) rotateZ(0) rotateX(40deg);
+   letter-spacing:0.3em;
+   opacity:0.7;
 }
 
 .game-overlay {
@@ -205,10 +219,11 @@ filtser:invert(1);
 
 @keyframes overlays {
   0% {
-      transform: perspective(400px) translateZ(30px) rotateZ(0) rotateX(20deg);
+      transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(40deg);
+
   }
   100% {
-      transform: perspective(400px) translateZ(10px) rotateZ(-10deg) rotateX(-20deg);
+      transform: perspective(400px) translateZ(0px)  rotateX(-10deg);
   }
 
 }
@@ -221,10 +236,11 @@ filtser:invert(1);
 }
 
 .game-overlay, .code-overlay, .writing-overlay {
-    border: 1px solid rgba(100,100,255,0.3);
-    background: rgba(200,200,200,0.05);
+    aaaborder: 1px solid rgba(100,100,255,0.3);
+    sbackground: rgba(200,200,200,0.1);
     sbox-shadow: 0 0 1px 4px rgba(0,100,255,0.8);
     z-index:1000;
+    border: 1px solid rgba(85,255,255,0.2);
 }
 
 .code-overlay {
@@ -237,7 +253,7 @@ filtser:invert(1);
 
 .writing-overlay {
   grid-area: writing;
-  background:rgba(100,200,100,0.1);
+
   text-shadow: 0 0 3px #6e6, 0 0 8px black;
   padding-top:2em;font-size:40px;
 }
@@ -280,7 +296,7 @@ filtser:invert(1);
         opacity: 1;
     }
     100% {
-        opacity:0.8;
+        opacity:0.72;
     }
 }
 
@@ -422,23 +438,30 @@ filtser:invert(1);
     <div class="overlay code-overlay">CODE</div>
     <div class="overlay writing-overlay">WRITING</div>
     <form class="contact" action="https://formspree.io/taki.litwa@gmail.com" method="POST">
-        <h2>Contact</h2>
+        <h2>Contact </h2>
         <label>E-mail: <input name="email" type="email" /></label>
         <br><br>
         <label>Message:<br><textarea  name="message"></textarea></label>
         <br><br>
-        <input type="submit">
+        <input type="submit" value="Send 🚀 ">
     </form>
   </div>
   <script>
   const d = document;
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 160; i++) {
     const star = d.createElement('div');
     star.className = 'star';
     star.style.left = (~~(Math.random()*100))+'vw';
     star.style.top = (~~(Math.random()*100))+'vh';
+    const r = (~~(Math.random() * 2) + 1) + 'px';
+    star.style.width = r;
+    star.style.height = r;
+    star.style.opacity  = (Math.random() * 0.4) + 0.6;
+    star.style.boxShadow  = `0 0 10px rgba(255,255,255,0.6)`;
     const offset = ((Math.random() * 10) / 10) + 's';
-    star.style.animation = `blink 0.2s ${offset} infinite alternate`;
+    const dur = (~~(((Math.random() * 0.3) + 0.2) * 100))/100;
+    console.log(dur);
+    star.style.animation = `blink ${dur}s ${offset} infinite alternate`;
     d.body.appendChild(star);
     // setTimeout(() => {
     //     if (Math.random()<0.1) star.style.marginTop = 100+'px';
