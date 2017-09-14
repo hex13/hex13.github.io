@@ -73,6 +73,8 @@ body {
 .contact {
     vertical-align:top;
     font-size: 1em;
+    background: rgba(0,0,0,0.8);
+
 
 }
 .contact label {
@@ -264,6 +266,24 @@ filtser:invert(1);
     padding: 2px;
 }
 
+.star {
+    background: #feb;
+    width: 2px;
+    height: 2px;
+    position: fixed;
+    border-radius:50%;
+    z-index: -100;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity:0.8;
+    }
+}
+
 @media (max-width: 72em) {
     body {
 
@@ -410,4 +430,19 @@ filtser:invert(1);
         <input type="submit">
     </form>
   </div>
+  <script>
+  const d = document;
+  for (let i = 0; i < 100; i++) {
+    const star = d.createElement('div');
+    star.className = 'star';
+    star.style.left = (~~(Math.random()*100))+'vw';
+    star.style.top = (~~(Math.random()*100))+'vh';
+    const offset = ((Math.random() * 10) / 10) + 's';
+    star.style.animation = `blink 0.2s ${offset} infinite alternate`;
+    d.body.appendChild(star);
+    // setTimeout(() => {
+    //     if (Math.random()<0.1) star.style.marginTop = 100+'px';
+    // }, 1000);
+  }
+  </script>
 </body>
