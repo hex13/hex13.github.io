@@ -42,7 +42,7 @@ body {
 .logo {
     background:rgba(0,0,0,0.3);
     padding: 4px;
-    margin-bottom: 20px;
+    margin-bottom: 1.5em;
 }
 
 
@@ -71,21 +71,24 @@ body {
   transition: 1s all;
   transform: perspective(400px) rotateZ(10deg) rotateX(0deg);
   opacity: 0.9;
-
+  filter:  sepia(1) hue-rotate(170deg) brightness(80%);
 }
 
 @keyframes app {
     0% {
         transform: scale(1);
         opacity: 0.9;
+
     }
     20% {
         opacity: 0.9;
+
     }
     100% {
         transform: scale(0.96);
 
         opacity:0.3;
+
     }
 
 }
@@ -181,7 +184,7 @@ body {
 
   animation: app-hover 3s  ease-in-out;
   border-radius: 20%;
-          filter: hue-rotate(-20deg);
+          filter: sepia(0) hue-rotate(0deg);
 }
 
 
@@ -190,12 +193,12 @@ body {
         transform: none;
         border-radius: 0%;
         box-shadow: inset 0 0 3px 4px #215;
-        filter: hue-rotate(0deg);
+
     }
     15% {
         transform: perspective(200px) rotateZ(0deg) rotateX(10deg) translateY(-20px);
 border-radius: 10%;
-filtser:invert(0.2);
+
         box-shadow: inset 0 0 2px 4px #aaf;
 
 
@@ -212,11 +215,11 @@ filtser:invert(1);
     75% {
 
         border-radius: 20%;
-filtser:invert(1);
+
     }
 
     100% {
-        aaaaafilter: invert(0);
+
     }
 
 }
@@ -232,7 +235,7 @@ filtser:invert(1);
 .game-overlay, .code-overlay, .writing-overlay {
 transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(40deg);
    letter-spacing:0.3em;
-   opacity:0.5;
+   opacity:0.6;
     font-family: "VT323", Helvetica, sans-serif;
 }
 
@@ -296,7 +299,7 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(40deg);
   pointer-events:none;
   text-align:center;
 
-  color:rgba(255,255,255, 0.2);
+  color:rgba(255,255,255, 0.8);
 
 
 }
@@ -496,7 +499,7 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(40deg);
     star.style.boxShadow  = `0 0 10px rgba(255,255,255,0.6)`;
     const offset = ((Math.random() * 10) / 10) + 's';
     const dur = (~~(((Math.random() * 0.3) + 0.2) * 100))/100;
-    console.log(dur);
+
     star.style.animation = `blink ${dur}s ${offset} infinite alternate`;
     d.body.appendChild(star);
     // setTimeout(() => {
