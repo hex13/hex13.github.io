@@ -1,5 +1,6 @@
 <!doctype html>
 <meta charset="utf8">
+<link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
 <style>
 * {
   transition: 0.2s all;
@@ -16,6 +17,36 @@ body {
 
   font-size: 16px;
 }
+
+.logo-name {
+    font-size: 4em;
+
+    filter: blur(2px);
+    color:rgba(255,255,255,0.3);
+
+    text-shadow: 0 0 4px rgba(255,255,255,0.1);
+    box-shadow: 0 0 2px white;
+
+    display:inline-block;
+    padding: 4px;
+    cursor: default;
+}
+
+.logo-name:hover {
+    filter: blur(0px);
+}
+
+@keyframes logo {
+
+}
+.logo {
+    background:rgba(0,0,0,0.3);
+    padding: 4px;
+    margin-bottom: 6px;
+}
+
+
+
 .grid {
   display: grid;
   grid-template-areas: "game game desc desc"
@@ -199,9 +230,10 @@ filtser:invert(1);
 }
 
 .game-overlay, .code-overlay, .writing-overlay {
-    transform: perspective(400px) translateZ(30px) rotateZ(0) rotateX(40deg);
+transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(40deg);
    letter-spacing:0.3em;
-   opacity:0.7;
+   opacity:0.5;
+    font-family: "VT323", Helvetica, sans-serif;
 }
 
 .game-overlay {
@@ -231,8 +263,9 @@ filtser:invert(1);
 .game-overlay {
   grid-area: game;
 
-  text-shadow: 0 0 3px blue, 0 0 8px black;;
+  text-shadow: 0 0 3px cyan, 0 0 8px black;
   padding-top:1em;font-size:40px;
+
 }
 
 .game-overlay, .code-overlay, .writing-overlay {
@@ -240,7 +273,7 @@ filtser:invert(1);
     sbackground: rgba(200,200,200,0.1);
     sbox-shadow: 0 0 1px 4px rgba(0,100,255,0.8);
     z-index:1000;
-    border: 1px solid rgba(85,255,255,0.2);
+    border: 1px solid rgba(85,255,255,0.4);
 }
 
 .code-overlay {
@@ -263,7 +296,7 @@ filtser:invert(1);
   pointer-events:none;
   text-align:center;
 
-  color:rgba(255,255,255, 0.8);
+  color:rgba(255,255,255, 0.2);
 
 
 }
@@ -359,6 +392,9 @@ filtser:invert(1);
 }
 </style>
 <body>
+    <div class="logo">
+  <div class="logo-name">hex13</div>
+  </div>
   <div class="grid">
 
     <a
