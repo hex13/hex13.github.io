@@ -401,6 +401,7 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
         padding: 0em;
         font-size: 14px;
         width:38em;
+
     }
     .grid {
       display: grid;
@@ -431,6 +432,35 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
         grid-template-columns: repeat(2, 7em) 22em;
     }
 }
+
+@media (max-width: 64em) and (min-height:80em) {
+    body {
+        width: 40em;
+    }
+    .grid {
+        grid-template-areas: "game game"
+          "code code"
+          "code code"
+          "writing writing"
+          "desc desc";
+        grid-template-columns: repeat(2, 20em);
+
+    }
+    .contact [name=message] {
+        width:35em;height:16em;
+    }
+
+    @keyframes overlays {
+        0% {
+            transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(10deg);
+        }
+        100% {
+            transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(0deg);
+        }
+    }
+
+}
+
 </style>
 <body>
     <div class="logo" >
