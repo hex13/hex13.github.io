@@ -233,9 +233,9 @@ filtser:invert(1);
 }
 
 .game-overlay, .code-overlay, .writing-overlay {
-transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(40deg);
+transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
    letter-spacing:0.3em;
-   opacity:0.6;
+   opacity:0.7;
     font-family: "VT323", Helvetica, sans-serif;
 }
 
@@ -254,11 +254,11 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(40deg);
 
 @keyframes overlays {
   0% {
-      transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(40deg);
+      transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
 
   }
   100% {
-      transform: perspective(400px) translateZ(0px)  rotateX(-10deg);
+      transform: perspective(400px) translateZ(-40px)  rotateX(30deg);
   }
 
 }
@@ -276,7 +276,9 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(40deg);
     sbackground: rgba(200,200,200,0.1);
     sbox-shadow: 0 0 1px 4px rgba(0,100,255,0.8);
     z-index:1000;
-    border: 1px solid rgba(85,255,255,0.4);
+    sborder: 1px solid rgba(85,255,255,0.4);
+    border: 1px solid  rgba(80, 150, 200, 0.8);
+    box-shadow: 0 0 4px rgba(80, 150, 200, 0.5);
 }
 
 .code-overlay {
