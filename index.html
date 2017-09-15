@@ -8,7 +8,8 @@
 
 body {
   font-family: Helvetica, sans-serif;
-  padding: 8em 8em;
+  padding: 0;
+
   background: #215;
   background: linear-gradient(to bottom, #080415, #190D40);
   background: linear-gradient(to bottom, #060410, #080820);
@@ -16,16 +17,25 @@ body {
   color: #fff;
 
   font-size: 16px;
+  margin:1em auto;
+  width: 1000px;
+
 }
+
+
+
+
 
 .logo-name {
     font-size: 4em;
 
-    filter: blur(2px);
+    filter: blur(1px);
     color:rgba(255,255,255,0.3);
 
-    text-shadow: 0 0 4px rgba(255,255,255,0.1);
+
+    text-shadow: 0 0 4px  rgba(255,255,255,0.3);
     box-shadow: 0 0 2px white;
+    stext-shadow: 0 0 4px rgba(100,200,255,0.3);
 
     display:inline-block;
     padding: 4px;
@@ -40,9 +50,12 @@ body {
 
 }
 .logo {
-    background:rgba(0,0,0,0.3);
+    background:rgba(0,0,0,0.4);
+
     padding: 4px;
+
     margin-bottom: 1.5em;
+
 }
 
 
@@ -151,7 +164,7 @@ body {
 }
 
 .contact [name=message] {
-    font-size:inherit;margin-top:1em;padding: 0.5em;vertical-align:top;width:20em;height:8em;
+    font-size:inherit;margin-top:1em;padding: 0.5em;vertical-align:top;width:26em;height:8em;
 }
 
 
@@ -341,11 +354,20 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
 @media (max-width: 72em) {
     body {
 
-        padding: 1em;
+        padding: 0em;
+        width: 50em;
+    }
+
+    .logo-name {
+        font-size: 22px;
+        filter: blur(0px);
+    }
+    .logo {
+        margin-bottom: 1em;
     }
 
     .contact [name=message] {
-        width:16em;height:18em;
+        width:16em;height:24em;
     }
 
 
@@ -369,12 +391,11 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
     }
 }
 
-@media (max-width: 52em) {
+@media (max-width: 54em) {
     body {
-
-        padding: 0.1em;
-        margin: 0;
+        padding: 0em;
         font-size: 14px;
+        width:38em;
     }
     .grid {
       display: grid;
@@ -382,12 +403,12 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
         "code code desc"
         "code code desc"
         "writing writing desc";
-      grid-template-columns: repeat(2, 11em) 20em;
-      grid-template-rows: repeat(4, 10em);
+      grid-template-columns: repeat(2, 11em) 22em;
+
       grid-gap: 0.1em;
   }
   .contact [name=message] {
-      width:14em;height:20em;
+      width:16em;height:20em;
   }
 
   .desc {
@@ -395,9 +416,19 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
 
   }
 }
+
+@media (max-width: 45em) {
+    body {
+        transform: scale(0.9);
+        width: 36em;
+    }
+    .grid {
+        grid-template-columns: repeat(2, 7em) 22em;
+    }
+}
 </style>
 <body>
-    <div class="logo">
+    <div class="logo" >
   <div class="logo-name">hex13</div>
   </div>
   <div class="grid">
@@ -487,6 +518,7 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
         <input type="submit" value="Send 🚀 ">
     </form>
   </div>
+
   <script>
   const d = document;
   for (let i = 0; i < 160; i++) {
