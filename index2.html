@@ -1,0 +1,510 @@
+<!doctype html>
+<meta charset="utf8">
+<link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+<style>
+* {
+  transition: 0.2s all;
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+  padding: 8em 8em;
+  background: #215;
+  background: linear-gradient(to bottom, #080415, #190D40);
+  background: linear-gradient(to bottom, #060410, #080820);
+  background-attachment:fixed;
+  color: #fff;
+
+  font-size: 16px;
+}
+
+.logo-name {
+    font-size: 4em;
+
+    filter: blur(2px);
+    color:rgba(255,255,255,0.3);
+
+    text-shadow: 0 0 4px rgba(255,255,255,0.1);
+    box-shadow: 0 0 2px white;
+
+    display:inline-block;
+    padding: 4px;
+    cursor: default;
+}
+
+.logo-name:hover {
+    filter: blur(0px);
+}
+
+@keyframes logo {
+
+}
+.logo {
+    background:rgba(0,0,0,0.3);
+    padding: 4px;
+    margin-bottom: 1.5em;
+}
+
+
+
+.grid {
+  display: grid;
+  grid-template-areas: "game game desc desc"
+    "code code desc desc"
+    "code code writing writing";
+  grid-template-columns: repeat(4, 16em);
+  grid-template-rows: repeat(3, 12em);
+}
+
+.grid > * {
+  sborder: 1px solid grey;
+}
+
+.game, .app {
+  background-size:cover;
+  color: white;
+  text-shadow: 0px 0px 8px black, 1px 1px 2px black;
+  padding:2em;
+  border-radius: 1%;
+  box-shadow: inset 0 0 2px 4px rgba(255,255,255,0.1);
+  animation: app 2s infinite alternate ease-in-out;
+  transition: 1s all;
+  transform: perspective(400px) rotateZ(10deg) rotateX(0deg);
+  opacity: 0.9;
+  filter:  sepia(1) hue-rotate(170deg) brightness(80%);
+}
+
+@keyframes app {
+    0% {
+        transform: scale(1);
+        opacity: 0.9;
+
+    }
+    20% {
+        opacity: 0.9;
+
+    }
+    100% {
+        transform: scale(0.96);
+
+        opacity:0.3;
+
+    }
+
+}
+
+
+.contact, .desc {
+  grid-area: desc;
+  padding: 2em;
+  border-radius: 2px;
+  border: 1px solid rgba(100,100,200,0.8);
+  border: 2px solid rgba(100,100,255,0.4);
+  border: 1px solid rgba(85,200,255,0.3);
+  background: rgba(0,0,0,0.4);
+  animation: desc 0.8s infinite alternate ease-in-out;
+  transform: perspective(400px) rotateX(4deg) translateY(-20px);
+  margin-left: 1em;
+  border-radius:0px;
+}
+
+.desc {
+    background: #010109;
+}
+
+.contact {
+    vertical-align:top;
+    font-size: 1em;
+    background: rgba(0,0,0,0.8);
+
+
+}
+.contact label {
+    font-size: 1em;
+}
+.contact input, .contact textarea  {
+    sanimation: input 0.8s infinite alternate ease-in;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    border-radius: 2px;
+    padding: 0.5em;
+}
+
+.contact [type=submit] {
+    width:100%;
+    font-size: 0.8em;
+    background: rgba(255,255,255,0.2);
+}
+
+.contact [type=submit]:hover {
+    box-shadow: 0 0 4px 6px rgba(100,150,255,0.1)
+}
+
+@keyframes input {
+    0% {
+        box-shadow: 0 0 3px 4px rgba(255,255,255,0.1);
+    }
+    100% {
+        box-shadow: 0 0 3px 4px rgba(255,255,255,0);
+    }
+}
+
+.contact [name=message] {
+    font-size:inherit;margin-top:1em;padding: 0.5em;vertical-align:top;width:20em;height:8em;
+}
+
+
+
+@keyframes desc {
+    0% {
+        transform: perspective(400px) rotateX(4deg) translateY(-20px);
+        box-shadow: 0 0 4px rgba(80, 150, 200, 0.8);
+
+    }
+    100% {
+        transform: perspective(400px) rotateX(4deg) translateY(-20px) scale(1.01);
+        box-shadow: 0 0 4px rgba(80, 150, 200, 0.2);
+    }
+
+}
+
+.hidden {
+  display: none;
+
+  sbackground: white;
+}
+
+.game:hover, .app:hover {
+  box-shadow: inset 0 0 3px 4px rgba(40, 40, 200, 0.2), 0 0 2px 3px rgba(200, 200, 200, 0.3);
+  border-radius: 0%;
+  z-index:1000000;
+  aaatransform: perspective(400px) rotateZ(0deg) rotateX(20deg) translateY(20px);;
+  transform: perspective(500px) rotateZ(0deg) rotateZ(-10deg) rotateX(20deg) translateY(20px) scale(1.1);
+
+  animation: app-hover 3s  ease-in-out;
+  border-radius: 20%;
+          filter: sepia(0) hue-rotate(0deg);
+}
+
+
+@keyframes app-hover {
+    0% {
+        transform: none;
+        border-radius: 0%;
+        box-shadow: inset 0 0 3px 4px #215;
+
+    }
+    15% {
+        transform: perspective(200px) rotateZ(0deg) rotateX(10deg) translateY(-20px);
+border-radius: 10%;
+
+        box-shadow: inset 0 0 2px 4px #aaf;
+
+
+    }
+    50% {
+        transform: perspective(200px) rotateZ(-6deg) rotateX(20deg) translateY(20px) scale(1.1);
+
+filtser:invert(1);
+
+    }
+    60% {
+
+    }
+    75% {
+
+        border-radius: 20%;
+
+    }
+
+    100% {
+
+    }
+
+}
+
+
+.game:hover + div, .app:hover + div {
+  display: block;
+  opacity:1;
+  z-index: 10;
+
+}
+
+.game-overlay, .code-overlay, .writing-overlay {
+transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
+   letter-spacing:0.3em;
+   opacity:0.6;
+    font-family: "VT323", Helvetica, sans-serif;
+}
+
+.game-overlay {
+    stransform: perspective(400px) translateZ(30px) rotateX(20deg);
+    animation: overlays 3s  ease-in-out infinite alternate;
+}
+
+.code-overlay {
+    animation: overlays 3s  ease-in-out 0.5s infinite alternate;
+}
+
+.writing-overlay {
+    animation: overlays 3s  ease-in-out 1s infinite alternate;
+}
+
+@keyframes overlays {
+  0% {
+      transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
+
+  }
+  100% {
+      transform: perspective(400px) translateZ(-40px)  rotateX(30deg);
+  }
+
+}
+
+.game-overlay {
+  grid-area: game;
+
+  text-shadow: 0 0 3px cyan, 0 0 8px black;
+  padding-top:1em;font-size:40px;
+
+}
+
+.game-overlay, .code-overlay, .writing-overlay {
+    aaaborder: 1px solid rgba(100,100,255,0.3);
+    sbackground: rgba(200,200,200,0.1);
+    sbox-shadow: 0 0 1px 4px rgba(0,100,255,0.8);
+    z-index:1000;
+    border: 1px solid rgba(85,255,255,0.4);
+}
+
+.code-overlay {
+  grid-area: code;
+
+
+  text-shadow: 0 0 3px #ed3, 0 0 8px black;
+  padding-top:3em;font-size:40px;
+}
+
+.writing-overlay {
+  grid-area: writing;
+
+  text-shadow: 0 0 3px #6e6, 0 0 8px black;
+  padding-top:2em;font-size:40px;
+}
+
+.overlay {
+
+  pointer-events:none;
+  text-align:center;
+
+  color:rgba(255,255,255, 0.8);
+
+
+}
+
+.game {
+
+}
+
+.tags {
+    margin: 0.5em;
+}
+
+.tags > * {
+    background: linear-gradient(to bottom, #00a, #000);
+    border: 1px solid orange;
+    padding: 2px;
+}
+
+.star {
+    background: #feb;
+    width: 2px;
+    height: 2px;
+    position: fixed;
+    border-radius:50%;
+    z-index: -100;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity:0.72;
+    }
+}
+
+@media (max-width: 72em) {
+    body {
+
+        padding: 1em;
+    }
+
+    .contact [name=message] {
+        width:16em;height:18em;
+    }
+
+
+    .grid {
+      display: grid;
+      grid-template-areas: "game game desc"
+        "code code desc"
+        "code code desc"
+        "writing writing desc";
+      grid-template-columns: repeat(2, 14em) 22em;
+      grid-template-rows: repeat(4, 10em);
+      grid-gap: 1em;
+    }
+
+    .blog {
+        grid-column-start: 2!important;
+    }
+
+    .game, .app {
+        box-shadow: none!important;
+    }
+}
+
+@media (max-width: 52em) {
+    body {
+
+        padding: 0.1em;
+        margin: 0;
+        font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-areas: "game game desc"
+        "code code desc"
+        "code code desc"
+        "writing writing desc";
+      grid-template-columns: repeat(2, 11em) 20em;
+      grid-template-rows: repeat(4, 10em);
+      grid-gap: 0.1em;
+  }
+  .contact [name=message] {
+      width:14em;height:20em;
+  }
+
+  .desc {
+      margin-left: 0;
+
+  }
+}
+</style>
+<body>
+    <div class="logo">
+  <div class="logo-name">hex13</div>
+  </div>
+  <div class="grid">
+
+    <a
+        href="/apps/cat/"
+        class="game" style="grid-area: 1 / 1 / 1 / 1; background-image:url(http://hex13.github.io/cat.png)">
+      jumping cat
+    </a>
+    <div class="hidden desc">
+        <h2>Jumping cat</h2>
+        <p>You're a cat. You have the power of Magic Jumping. Beware of machines and enemy creatures!</p>
+        <p>Games was written using Box2D physics engine.</p>
+    </div>
+    <a
+        href="http://www.kongregate.com/games/hex13games/shoot-the-witch"
+        class="game"  style="grid-area: 1 / 2 / 1 / 2; background-image:url(/witch.jpg)">shoot the witch
+    </a>
+    <div class="hidden desc">
+        <h2>Shoot the witch</h2>
+        <p>You have to shoot bullets in appropriate direction in order to kill the witch.</p>
+        <p>Witch has its own artificial intelligence (simple state machine).</p>
+        <p>Game is available on Kongregate platform.</p>
+    </div>
+    <a
+        href="/tutorials/es6/file.html"
+        class="app" style="grid-area: 2 / 1 / 2 / 1; background-image:url(/file.png)">
+      What is in JavaScript file?
+    </a>
+    <div class="hidden desc">
+        <h2>What is in JavaScript file</h2>
+        <p>
+            Educational code visualization. It shows hint for code elements on mouse hover and it show curently executed functions.
+        </p>
+    </div>
+    <a
+        href="https://atom.io/packages/atom-lupa"
+        class="app"
+        style="grid-area: 2 / 2 / 2 / 2; background-image:url(/lupa.jpeg)">Lupa
+    </a>
+    <div class="hidden desc">
+        <h2>Lupa - outline for JavaScript files</h2>
+        <p>Atom extension. Live demo is available</p>
+        <p>It shows a sidebar with list of functions, variables etc.</p>
+        <p>It allows for semantic searching</p>
+    </div>
+    <a
+        href="https://www.npmjs.com/package/san-escobar"
+        class="app"  style="grid-area: 3 / 1 / 3 / 1;background-image:url(/san-escobar.gif)">San Escobar
+
+    </a>
+    <div class="hidden desc">
+        <h2>San Escobar</h2>
+        JavaScript library that allows for pretty visualisation of program control flow.
+    </div>
+    <a
+
+        class="app"  style="display:none;grid-area: 3 / 2 / 3 / 2">...
+    </a>
+    <div class="hidden desc"> to jest coś innego! KOD 2</div>
+    <a
+        href="https://medium.com/@hex13code/lost-in-code-created-tool-for-finding-way-out-700d96ef8c31"
+        class="app"  style="grid-row-start:writing;grid-column-start:writing;background: url(doc.svg) no-repeat">Lost in code. Created tool for finding way out.
+    </a>
+    <div class="hidden desc">
+        <h2>Lost in code. Created tool for finding way out.</h2>
+        <p><em>"I always get lost in code so I made tool for better navigation and code search"</em></p>
+
+    </div>
+    <a
+        href="https://13zmiennych.blogspot.com"
+        class="app blog"  style="grid-row-start:writing;grid-column-start:4;background: url(doc.svg) no-repeat">13 Zmiennych - blog (PL)
+    </a>
+    <div class="hidden desc">
+        <h2>13 zmiennych</h2>
+        <p>Blog about programming in JavaScript (in Polish)</p>
+    </div>
+    <div class="overlay game-overlay">GAMES</div>
+    <div class="overlay code-overlay">CODE</div>
+    <div class="overlay writing-overlay">WRITING</div>
+    <form class="contact" action="https://formspree.io/taki.litwa@gmail.com" method="POST">
+        <h2>Contact </h2>
+        <label>E-mail: <input name="email" type="email" /></label>
+        <br><br>
+        <label>Message:<br><textarea  name="message"></textarea></label>
+        <br><br>
+        <input type="submit" value="Send 🚀 ">
+    </form>
+  </div>
+  <script>
+  const d = document;
+  for (let i = 0; i < 160; i++) {
+    const star = d.createElement('div');
+    star.className = 'star';
+    star.style.left = (~~(Math.random()*100))+'vw';
+    star.style.top = (~~(Math.random()*100))+'vh';
+    const r = (~~(Math.random() * 2) + 1) + 'px';
+    star.style.width = r;
+    star.style.height = r;
+    star.style.opacity  = (Math.random() * 0.4) + 0.6;
+    star.style.boxShadow  = `0 0 10px rgba(255,255,255,0.6)`;
+    const offset = ((Math.random() * 10) / 10) + 's';
+    const dur = (~~(((Math.random() * 0.3) + 0.2) * 100))/100;
+
+    star.style.animation = `blink ${dur}s ${offset} infinite alternate`;
+    d.body.appendChild(star);
+    // setTimeout(() => {
+    //     if (Math.random()<0.1) star.style.marginTop = 100+'px';
+    // }, 1000);
+  }
+  </script>
+</body>
