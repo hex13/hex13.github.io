@@ -1,13 +1,16 @@
 <!doctype html>
 <meta charset="utf8">
-<link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+<!-- <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet"> -->
+<!-- <link href="https://fonts.googleapis.com/css?family=Bangers" rel="stylesheet"> -->
+<link href="https://fonts.googleapis.com/css?family=Aldrich" rel="stylesheet">
 <style>
 * {
   transition: 0.2s all;
+  font-family: Aldrich, Helvetica, sans-serif!important;
 }
 
 body {
-  font-family: Helvetica, sans-serif;
+  font-family: Bangers, Helvetica, sans-serif;
   padding: 0;
 
   background: #215;
@@ -76,8 +79,9 @@ body {
 .game, .app {
   background-size:cover;
   color: white;
-  text-shadow: 0px 0px 8px black, 1px 1px 2px black;
-  padding:2em;
+  text-shadow: 0px 0px 6px black, 1px 1px 2px black;
+  text-decoration: none;
+  padding:1em;
   border-radius: 1%;
   box-shadow: inset 0 0 2px 4px rgba(255,255,255,0.1);
   animation: app 2s infinite alternate ease-in-out;
@@ -98,9 +102,9 @@ body {
 
     }
     100% {
-        transform: scale(0.96);
+        transform: scale(0.9);
 
-        opacity:0.3;
+        opacity:0.5;
 
     }
 
@@ -280,7 +284,7 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
   grid-area: game;
 
   text-shadow: 0 0 3px cyan, 0 0 8px black;
-  padding-top:1em;font-size:40px;
+  padding-top:2em;
 
 }
 
@@ -292,6 +296,7 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
     sborder: 1px solid rgba(85,255,255,0.4);
     border: 1px solid  rgba(80, 150, 200, 0.8);
     box-shadow: 0 0 4px rgba(80, 150, 200, 0.5);
+    font-size:30px;
 }
 
 .code-overlay {
@@ -299,14 +304,14 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
 
 
   text-shadow: 0 0 3px #ed3, 0 0 8px black;
-  padding-top:3em;font-size:40px;
+  padding-top:5em;
 }
 
 .writing-overlay {
   grid-area: writing;
 
   text-shadow: 0 0 3px #6e6, 0 0 8px black;
-  padding-top:2em;font-size:40px;
+  padding-top:2em;
 }
 
 .overlay {
@@ -509,7 +514,7 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
     <div class="overlay game-overlay">GAMES</div>
     <div class="overlay code-overlay">CODE</div>
     <div class="overlay writing-overlay">WRITING</div>
-    <form class="contact" action="https://formspree.io/taki.litwa@gmail.com" method="POST">
+    <form id="contact" class="contact" action="https://formspree.io/taki.litwa@gmail.com" method="POST">
         <h2>Contact </h2>
         <label>E-mail: <input name="email" type="email" /></label>
         <br><br>
