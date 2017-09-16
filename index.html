@@ -83,11 +83,12 @@ body {
   text-decoration: none;
   padding:1em;
   border-radius: 1%;
-  box-shadow: inset 0 0 2px 4px rgba(255,255,255,0.1);
+  box-shadow: inset 0 0 4px 6px rgba(255,255,255,0.2),  0 0 2px rgba(255,255,255,0.5);
   animation: app 2s infinite alternate ease-in-out;
   transition: 1s all;
   transform: perspective(400px) rotateZ(10deg) rotateX(0deg);
   opacity: 0.9;
+
   filter:  sepia(1) hue-rotate(170deg) brightness(80%);
 }
 
@@ -95,17 +96,19 @@ body {
     0% {
         transform: scale(1);
         opacity: 0.9;
-
+        filter:  sepia(1) hue-rotate(170deg) brightness(80%);
     }
     20% {
         opacity: 0.9;
 
     }
+    40% {
+        filter:  sepia(1) hue-rotate(170deg) brightness(80%);
+    }
     100% {
         transform: scale(0.9);
-
-        opacity:0.5;
-
+        opacity:0.7;
+        filter:  sepia(0.1) hue-rotate(0deg) brightness(80%);
     }
 
 }
@@ -193,35 +196,28 @@ body {
 }
 
 .game:hover, .app:hover {
-  box-shadow: inset 0 0 3px 4px rgba(40, 40, 200, 0.2), 0 0 2px 3px rgba(200, 200, 200, 0.3);
-  border-radius: 0%;
+  box-shadow: inset 0 0 3px 4px rgba(200, 200, 200, 0.2), 0 0 2px 3px rgba(200, 200, 200, 0.3);
+  box-shadow: inset 0 0 3px 4px rgba(80, 150, 200, 1), 0 0 4px 5px rgba(200, 200, 200, 0.3);;
+
   z-index:1000000;
   aaatransform: perspective(400px) rotateZ(0deg) rotateX(20deg) translateY(20px);;
   transform: perspective(500px) rotateZ(0deg) rotateZ(-10deg) rotateX(20deg) translateY(20px) scale(1.1);
-
+  opacity: 0.75;
   animation: app-hover 3s  ease-in-out;
   border-radius: 20%;
-          filter: sepia(0) hue-rotate(0deg);
+  filter: sepia(0) hue-rotate(0deg);
 }
 
 
 @keyframes app-hover {
     0% {
-        transform: none;
+        transform: perspective(200px) rotateZ(0deg) rotateX(0deg) translateY(-0px);
         border-radius: 0%;
-        box-shadow: inset 0 0 3px 4px #215;
-
+        box-shadow: inset 0 0 3px 4px rgba(80, 150, 200, 1), 0 0 2px 3px rgba(200, 200, 200, 0.3);
     }
-    15% {
-        transform: perspective(200px) rotateZ(0deg) rotateX(10deg) translateY(-20px);
-border-radius: 10%;
 
-        box-shadow: inset 0 0 2px 4px #aaf;
-
-
-    }
-    50% {
-        transform: perspective(200px) rotateZ(-6deg) rotateX(20deg) translateY(20px) scale(1.1);
+    30% {
+        transform: perspective(200px) rotateZ(-16deg) rotateX(20deg) translateY(20px) translateZ(30px);
 
 filtser:invert(1);
 
@@ -350,6 +346,12 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
 @keyframes blink {
     0% {
         opacity: 1;
+    }
+    30% {
+        opacity:0.8;
+    }
+    60% {
+        opacity:1;
     }
     100% {
         opacity:0.72;
@@ -556,18 +558,21 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
 
   <script>
   const d = document;
-  for (let i = 0; i < 160; i++) {
+  const rnd = n => Math.random() * n;
+  for (let i = 0; i < 180; i++) {
     const star = d.createElement('div');
     star.className = 'star';
     star.style.left = (~~(Math.random()*100))+'vw';
     star.style.top = (~~(Math.random()*100))+'vh';
-    const r = (~~(Math.random() * 2) + 1) + 'px';
+    const r = ~~(rnd(2) + 1) + 'px';
     star.style.width = r;
     star.style.height = r;
-    star.style.opacity  = (Math.random() * 0.4) + 0.6;
+    const alpha = (~~((rnd(0.7) + 0.3) * 10)) / 10;
+    star.style.background = `rgba(${200+~~rnd(56)},${200+~~rnd(56)},${200+~~rnd(56)}, ${alpha})`;
+
     star.style.boxShadow  = `0 0 10px rgba(255,255,255,0.6)`;
     const offset = ((Math.random() * 10) / 10) + 's';
-    const dur = (~~(((Math.random() * 0.3) + 0.2) * 100))/100;
+    const dur = (~~(((Math.random() * 0.4) + 0.3) * 100))/100;
 
     star.style.animation = `blink ${dur}s ${offset} infinite alternate`;
     d.body.appendChild(star);
