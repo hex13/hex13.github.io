@@ -82,11 +82,13 @@ body {
   text-shadow: 0px 0px 6px black, 1px 1px 2px black;
   text-decoration: none;
   padding:1em;
-  border-radius: 1%;
-  box-shadow: inset 0 0 4px 6px rgba(255,255,255,0.2),  0 0 2px rgba(255,255,255,0.5);
+  border-radius: 4%;
+
+
+
   animation: app 2s infinite alternate ease-in-out;
-  transition: 1s all;
-  transform: perspective(400px) rotateZ(10deg) rotateX(0deg);
+  stransition: 1s all;
+  transform: perspective(400px) rotateZ(50deg) rotateX(0deg);
   opacity: 0.9;
 
   filter:  sepia(1) hue-rotate(170deg) brightness(80%);
@@ -109,6 +111,7 @@ body {
         transform: scale(0.93);
         opacity:0.8;
         filter:  sepia(0.1) hue-rotate(0deg) brightness(80%);
+        sbox-shadow: inset 0 0 3px rgba(80, 150, 200, 0.8);
     }
 
 }
@@ -117,7 +120,7 @@ body {
 .contact, .desc {
   grid-area: desc;
   padding: 2em;
-  border-radius: 2px;
+
   border: 1px solid rgba(100,100,200,0.8);
   border: 2px solid rgba(100,100,255,0.4);
   border: 1px solid rgba(85,200,255,0.3);
@@ -200,11 +203,11 @@ body {
   box-shadow: inset 0 0 3px 4px rgba(80, 150, 200, 1), 0 0 4px 5px rgba(200, 200, 200, 0.3);;
 
   z-index:1000000;
-  aaatransform: perspective(400px) rotateZ(0deg) rotateX(20deg) translateY(20px);;
+
   transform: perspective(500px) rotateZ(0deg) rotateZ(-10deg) rotateX(20deg) translateY(20px) scale(1.1);
   opacity: 0.75;
   animation: app-hover 3s  ease-in-out;
-  border-radius: 20%;
+border-radius: 20%;
   filter: sepia(0) hue-rotate(0deg);
 }
 
@@ -212,8 +215,8 @@ body {
 @keyframes app-hover {
     0% {
         transform: perspective(200px) rotateZ(0deg) rotateX(0deg) translateY(-0px);
-        border-radius: 0%;
-        box-shadow: inset 0 0 3px 4px rgba(80, 150, 200, 1), 0 0 2px 3px rgba(200, 200, 200, 0.3);
+        border-radius: inherit;
+        sbox-shadow: inset 0 0 3px 4px rgba(80, 150, 200, 1), 0 0 2px 3px rgba(200, 200, 200, 0.3);
     }
 
     30% {
@@ -232,7 +235,7 @@ filtser:invert(1);
     }
 
     100% {
-
+border-radius: 20%;
     }
 
 }
@@ -246,7 +249,7 @@ filtser:invert(1);
 }
 
 .game-overlay, .code-overlay, .writing-overlay {
-transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
+transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(20deg);
    letter-spacing:0.3em;
    opacity:0.7;
     font-family: "VT323", Helvetica, sans-serif;
@@ -254,24 +257,24 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
 
 .game-overlay {
     stransform: perspective(400px) translateZ(30px) rotateX(20deg);
-    animation: overlays 3s  ease-in-out infinite alternate;
+    animation: overlays 4s  ease-in-out infinite alternate;
 }
 
 .code-overlay {
-    animation: overlays 3s  ease-in-out 0.5s infinite alternate;
+    animation: overlays 4s  ease-in-out 0.5s infinite alternate;
 }
 
 .writing-overlay {
-    animation: overlays 3s  ease-in-out 1s infinite alternate;
+    animation: overlays 4s  ease-in-out 1s infinite alternate;
 }
 
 @keyframes overlays {
   0% {
-      transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
+      transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(20deg);
 
   }
   100% {
-      transform: perspective(400px) translateZ(-40px)  rotateX(30deg);
+      transform: perspective(400px) translateZ(-20px)  rotateX(20deg);
   }
 
 }
@@ -290,8 +293,9 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(30deg);
     sbox-shadow: 0 0 1px 4px rgba(0,100,255,0.8);
     z-index:1000;
     sborder: 1px solid rgba(85,255,255,0.4);
-    border: 1px solid  rgba(80, 150, 200, 0.8);
-    box-shadow: 0 0 4px rgba(80, 150, 200, 0.5);
+    border: 2px solid  rgba(80, 150, 200, 0.8);
+    background: linear-gradient(to right, rgba(0,0,0,0.1), rgba(80, 150, 200, 0.1));
+    sbox-shadow: inset 0 0 4px rgba(80, 150, 200, 1), 0 0 4px 7px rgba(80, 150, 200, 0.1);
     font-size:30px;
 }
 
