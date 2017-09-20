@@ -25,7 +25,10 @@ body {
 
 }
 
-
+a {
+    text-decoration: none;
+    color:inherit;;
+}
 
 
 
@@ -64,6 +67,8 @@ body {
 
 
 .grid {
+  display:flex;
+  flex-direction:column;
   display: grid;
   grid-template-areas: "game game desc desc"
     "code code desc desc"
@@ -72,11 +77,16 @@ body {
   grid-template-rows: repeat(3, 12em);
 }
 
+
+
 .grid > * {
   sborder: 1px solid grey;
 }
 
 .game, .app {
+
+
+
   background-size:cover;
   color: white;
   text-shadow: 0px 0px 6px black, 1px 1px 2px black;
@@ -92,6 +102,17 @@ body {
   opacity: 0.9;
 
   filter:  sepia(1) hue-rotate(170deg) brightness(80%);
+
+  display:block;
+  width: 120px;
+  height: 80px;
+}
+
+@supports (display:grid) {
+    .game, .app {
+        width: auto;
+        height: auto;
+    }
 }
 
 @keyframes app {
@@ -129,7 +150,16 @@ body {
   transform: perspective(400px) rotateX(4deg) translateY(-20px);
   margin-left: 1em;
   border-radius:0px;
+
+ 
 }
+.desc {
+    transition: 0.1s background-color;
+}
+
+ .desc:hover {
+     background:#0a031a;
+ }
 
 .desc {
     background: #010109;
@@ -198,17 +228,20 @@ body {
   sbackground: white;
 }
 
-.game:hover, .app:hover {
-  box-shadow: inset 0 0 3px 4px rgba(200, 200, 200, 0.2), 0 0 2px 3px rgba(200, 200, 200, 0.3);
-  box-shadow: inset 0 0 3px 4px rgba(80, 150, 200, 1), 0 0 4px 5px rgba(200, 200, 200, 0.3);;
+@supports (display:grid) {
+    .game:hover, .app:hover {
+      box-shadow: inset 0 0 3px 4px rgba(200, 200, 200, 0.2), 0 0 2px 3px rgba(200, 200, 200, 0.3);
+      box-shadow: inset 0 0 3px 4px rgba(80, 150, 200, 1), 0 0 4px 5px rgba(200, 200, 200, 0.3);;
 
-  z-index:1000000;
+      z-index:1000000;
 
-  transform: perspective(500px) rotateZ(0deg) rotateZ(-10deg) rotateX(20deg) translateY(20px) scale(1.1);
-  opacity: 0.75;
-  animation: app-hover 3s  ease-in-out;
-border-radius: 20%;
-  filter: sepia(0) hue-rotate(0deg);
+      transform: perspective(500px) rotateZ(0deg) rotateZ(-10deg) rotateX(20deg) translateY(20px) scale(1.1);
+      opacity: 0.75;
+      animation: app-hover 3s  ease-in-out;
+    border-radius: 20%;
+      filter: sepia(0) hue-rotate(0deg);
+    }
+
 }
 
 
@@ -240,12 +273,21 @@ border-radius: 20%;
 
 }
 
-
 .game:hover + div, .app:hover + div {
-  display: block;
+  display: inline-block;
+  sposition:fixed;
   opacity:1;
   z-index: 10;
 
+}
+
+
+@supports (display:grid) {
+    .game:hover + div, .app:hover + div {
+      display: block;
+      opacity:1;
+      z-index: 10;
+    }
 }
 
 .game-overlay, .code-overlay, .writing-overlay {
@@ -315,14 +357,26 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(20deg);
 }
 
 .overlay {
-
   pointer-events:none;
   text-align:center;
-
   color:rgba(255,255,255, 0.8);
-
-
+  display:none;
 }
+
+.desc {
+    display:inline-block;
+}
+
+
+@supports (display:grid) {
+    .overlay {
+        display: block;
+    }
+    .desc {
+        display:none;
+    }
+}
+
 
 .game {
 
@@ -383,7 +437,6 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(20deg);
 
 
     .grid {
-      display: grid;
       grid-template-areas: "game game desc"
         "code code desc"
         "code code desc"
@@ -410,7 +463,7 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(20deg);
 
     }
     .grid {
-      display: grid;
+
       grid-template-areas: "game game desc"
         "code code desc"
         "code code desc"
@@ -467,6 +520,8 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(20deg);
 
 }
 
+
+
 </style>
 <body>
     <div class="logo" >
@@ -480,19 +535,24 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(20deg);
       jumping cat
     </a>
     <div class="hidden desc">
+        <a href="/apps/cat">
         <h2>Jumping cat</h2>
         <p>You're a cat. You have the power of Magic Jumping. Beware of machines and enemy creatures!</p>
         <p>Games was written using Box2D physics engine.</p>
+    </a>
     </div>
     <a
         href="http://www.kongregate.com/games/hex13games/shoot-the-witch"
         class="game"  style="grid-area: 1 / 2 / 1 / 2; background-image:url(/witch.jpg)">shoot the witch
     </a>
     <div class="hidden desc">
+        <a
+            href="http://www.kongregate.com/games/hex13games/shoot-the-witch">
         <h2>Shoot the witch</h2>
         <p>You have to shoot bullets in appropriate direction in order to kill the witch.</p>
         <p>Witch has its own artificial intelligence (simple state machine).</p>
         <p>Game is available on Kongregate platform.</p>
+    </a>
     </div>
     <a
         href="/tutorials/es6/file.html"
@@ -500,10 +560,12 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(20deg);
       What is in JavaScript file?
     </a>
     <div class="hidden desc">
+        <a href="/tutorials/es6/file.html">
         <h2>What is in JavaScript file</h2>
         <p>
             Educational code visualization. It shows hint for code elements on mouse hover and it show curently executed functions.
         </p>
+        </a>
     </div>
     <a
         href="https://atom.io/packages/atom-lupa"
@@ -511,10 +573,12 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(20deg);
         style="grid-area: 2 / 2 / 2 / 2; background-image:url(/lupa.jpeg)">Lupa
     </a>
     <div class="hidden desc">
+        <a href="https://atom.io/packages/atom-lupa">
         <h2>Lupa - outline for JavaScript files</h2>
         <p>Atom extension. Live demo is available</p>
         <p>It shows a sidebar with list of functions, variables etc.</p>
         <p>It allows for semantic searching</p>
+        </a>
     </div>
     <a
         href="https://www.npmjs.com/package/san-escobar"
@@ -522,30 +586,35 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(20deg);
 
     </a>
     <div class="hidden desc">
+        <a href="https://www.npmjs.com/package/san-escobar">
         <h2>San Escobar</h2>
         JavaScript library that allows for pretty visualisation of program control flow.
+    </a>
     </div>
     <a
 
         class="app"  style="display:none;grid-area: 3 / 2 / 3 / 2">...
     </a>
-    <div class="hidden desc"> to jest coś innego! KOD 2</div>
+    <!-- <div class="hidden desc"> to jest coś innego! KOD 2</div> -->
     <a
         href="https://medium.com/@hex13code/lost-in-code-created-tool-for-finding-way-out-700d96ef8c31"
         class="app"  style="grid-row-start:writing;grid-column-start:writing;background: url(doc.svg) no-repeat">Lost in code. Created tool for finding way out.
     </a>
     <div class="hidden desc">
+        <a href="https://medium.com/@hex13code/lost-in-code-created-tool-for-finding-way-out-700d96ef8c31">
         <h2>Lost in code. Created tool for finding way out.</h2>
         <p><em>"I always get lost in code so I made tool for better navigation and code search"</em></p>
-
+        </a>
     </div>
     <a
         href="https://13zmiennych.blogspot.com"
         class="app blog"  style="grid-row-start:writing;grid-column-start:4;background: url(doc.svg) no-repeat">13 Zmiennych - blog (PL)
     </a>
     <div class="hidden desc">
+        <a href="https://13zmiennych.blogspot.com">
         <h2>13 zmiennych</h2>
         <p>Blog about programming in JavaScript (in Polish)</p>
+    </a>
     </div>
     <div class="overlay game-overlay">GAMES</div>
     <div class="overlay code-overlay">CODE</div>
@@ -562,8 +631,8 @@ transform: perspective(400px) translateZ(0px) rotateZ(0) rotateX(20deg);
 
   <script>
   const d = document;
-  const rnd = n => Math.random() * n;
-  for (let i = 0; i < 180; i++) {
+  var rnd = function (n) {return Math.random() * n};
+  for (var i = 0; i < 180; i++) {
     const star = d.createElement('div');
     star.className = 'star';
     star.style.left = (~~(Math.random()*100))+'vw';
