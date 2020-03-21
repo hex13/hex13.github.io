@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 -10 100 100">
+  <!-- <path d="M 20 70 l 20 -20 l 20 0 l 20 20" stroke-width="4" stroke="rgba(255,200,100, 0.7)" fill="none"/> -->
+  <path d="M 20 70 l 20 -20 l 20 0 l 20 20" stroke-width="4" stroke="rgba(70,190,70, 0.7)" fill="none"/>
+
+  <!-- arrow -->
+  <!-- <path d="M 50 10 l 0 30" 
+    stroke="rgba(255, 100, 255, 0.7)" stroke-width="4" fill="none" stroke-linecap="round" />
+  <path d="M 50 10 m 0 0 m 8 10 l -8 -10 l -8 10"  
+    stroke="rgba(255, 100, 255, 0.7)" stroke-width="4" fill="none" stroke-linecap="round" /> -->
+  <path d="M 50 10 l 0 30" 
+    stroke="rgba(255, 255, 255, 0.7)" stroke-width="4" fill="none" stroke-linecap="round" />
+  <path d="M 50 10 m 0 0 m 8 10 l -8 -10 l -8 10"  
+    stroke="rgba(255, 255, 255, 0.7)" stroke-width="4" fill="none" stroke-linecap="round" />
+
+</svg>
