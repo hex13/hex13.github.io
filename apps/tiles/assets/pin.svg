@@ -1,0 +1,15 @@
+<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 -15 120 120" >
+  <defs>
+    <clipPath id="cp">
+      <circle cx="50" cy="35" r="5" fill='red'/>
+
+      <!-- <path d="M 20 35 c 0 -40, 60 -40, 60 0 c 0 20, -30 50, -30 50 c 0 0, -30 -30, -30 -50" 
+      stroke="rgba(255, 255, 255, 0.4)" stroke-width="3" fill="rgba(230, 60, 60, 0.4)" stroke-linecap="round" /> -->
+    </clipPath>
+  </defs>
+  <!-- <path d="M 20 70 l 20 -20 l 20 0 l 20 20" stroke-width="4" stroke="rgba(255,200,100, 0.7)" fill="none"/> -->
+  <path d="M 20 35 c 0 -40, 60 -40, 60 0 c 0 20, -30 50, -30 50 c 0 0, -30 -30, -30 -50" 
+    stroke="rgba(255, 255, 255, 0.4)" stroke-width="3" fill="rgba(240, 240, 100, 0.4)" stroke-linecap="round" />
+  <circle cx="50" cy="35" r="15" stroke="rgba(255, 255, 255, 0.4)" fill="rgba(0, 0, 0, 0.4)" stroke-width="3" stroke-linecap="round" />
+
+</svg>
