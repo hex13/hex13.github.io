@@ -1,0 +1,397 @@
+<!doctype HTML>
+<head>
+    <meta charset="UTF8">
+</head>
+<body>
+    <canvas id="game" width="1024" height="1024" style="background-color: #ddd;"></canvas>
+    <button id="horizontal">horizontal</button>
+    <button id="vertical">vertical</button>
+    <button id="next">next</button>
+    <script src="geom.js"></script>
+    <script>
+        let buildingFlags = 0;
+        const d = document;
+        const canvas = d.getElementById("game");
+        const ctx = canvas.getContext("2d");
+        const gridSize = 50;
+
+        const BEZIER_LENGTH = 4;
+        const LEFT_LINK = 1;
+        const RIGHT_LINK = 0b10;
+        const TOP_LINK = 0b100;
+        const BOTTOM_LINK = 0b1000;
+        d.getElementById('horizontal').addEventListener('click', e => {
+            buildingFlags = LEFT_LINK | RIGHT_LINK; 
+        });
+        d.getElementById('vertical').addEventListener('click', e => {
+            buildingFlags = TOP_LINK | BOTTOM_LINK;
+        });
+        d.getElementById('next').addEventListener('mousedown', e => {
+            if (line.length < 3) {
+                console.log("POP")
+                lines.pop();
+                line = [
+                    // computeCoords(e),
+                ];
+                lines.push(line);
+
+            }
+            down = false;
+            e.stopPropagation();
+        });
+
+
+        const unit = gridSize;
+        const lines =  [
+                [[0, unit],
+                [0.3 * unit, unit],
+                [0.7 * unit, unit],
+                [unit, unit]],
+
+                [[unit, unit],
+                [1.5 * unit, unit],
+                [2 * unit, 1.5 * unit],
+                [2 * unit, 2 * unit]],
+
+                [[2 * unit, 2 * unit],
+                [2 * unit, 2.3 * unit],
+                [2 * unit, 2.7 * unit],
+                [2 * unit, 3 * unit]],
+
+                [[2 * unit, 3 * unit],
+                [2 * unit, 3.5 * unit],
+                [2.5 * unit, 4 * unit],
+                [3 * unit, 4 * unit]],
+
+        ];
+        lines.forEach(l => {
+            l.forEach(p => {
+                p[0] += 200;
+                p[1] += 300;
+            })
+        });
+        window.lines = lines;
+
+        function clean() {
+            lines.shift();
+
+            setTimeout(clean, lines.length > 15? 500 : 3000);
+            
+        }
+        setTimeout(clean, 3000);
+        
+        const train = {
+            lineIndex: 0,
+            x: 120,
+            y: 200,
+            t: 0,
+            startDir: [0, 0],
+            endDir: [0, 0],
+            lines: lines.slice(0, 3),
+            cars: [
+                {offset: 0, x: 0, y: 0, color: 'red'},
+            ],
+            update() {
+                const lines = this.lines;
+                const line = lines[this.lineIndex];
+                // if (!line || line.length < 4) return;
+                this.cars.forEach(car => {
+                    // const localT = ~~(this.t - car.offset);
+                    const curve = lines[this.lineIndex + Math.floor(this.t + car.offset)];
+                    if (!curve) return;
+                    const pt = pointAtBezier(curve, (1000 + this.t + car.offset) % 1 );
+                    car.angle = Math.atan2(pt[1] - car.y, pt[0] - car.x);
+                    car.x = pt[0];
+                    car.y = pt[1];
+                    
+                });
+                this.t += 0.03;
+                if (this.t >= 1.0) {
+                    this.t = 0;
+                    console.log("lines.length", lines.length);
+                    // this.lineIndex = (this.lineIndex + 1) % (lines.length - 1);
+                    this.lineIndex = (this.lineIndex + 1);// % (lines.length);
+                    if (this.lineIndex >= lines.length) {
+                        const lastLine = lines[lines.length - 1];
+                        const lastPoint = lastLine[lastLine.length - 1];
+
+                        {
+                            const dx = lastLine[2][0] - lastLine[0][0];
+                            const dy = lastLine[2][1] - lastLine[0][1];
+                            // TODO what about negative directions?
+                            // if (dx > )
+                        }
+                        console.log("LAST DIR", 
+                            
+                        );
+
+                        this.startDir = this.endDir.slice();// [1, 0];
+
+                        
+
+                        const dirs = [-1, -1, 1, 1, 0];
+                        console.log("angle =", Math.atan2(this.startDir[1], this.startDir[0]) / Math.PI * 180 )
+                        let angle = Math.atan2(this.startDir[1], this.startDir[0]);
+                        angle += ((~~(Math.random() * 3)) - 1) * Math.PI / 2;
+                        // angle += ((~~(Math.random() * 5)) - 2) * Math.PI / 4;
+                        if (lastPoint[1] < 100) angle = Math.PI/2;
+                        if (lastPoint[1] > 500) {
+                            console.log("XXXX!!!!")
+                            angle = - Math.PI/2;
+                        }
+                        if (lastPoint[0] > 900) angle = -Math.PI;
+                        if (lastPoint[0] < 100) angle = 0;
+                        
+                        this.endDir = [
+                            Math.cos(angle),
+                            Math.sin(angle),
+                        ];
+                        
+                        const target = [
+                            lastPoint[0] + (this.startDir[0] + this.endDir[0]) * unit,
+                            lastPoint[1] + (this.startDir[1] + this.endDir[1]) * unit,
+                        ];
+
+                        const f = 0.5;
+                        
+                        const newCurve = [
+                            lastPoint.slice(),
+                            [lastPoint[0] + unit * f * this.startDir[0], lastPoint[1] + unit * f * this.startDir[1]],
+                            [target[0] - unit * f * this.endDir[0], target[1] - unit * f * this.endDir[1]],
+                            target,
+                        ];
+                        window.lines.push(newCurve);
+                        this.lines.push(newCurve);
+                    }
+                    
+                }
+            },
+            render() {
+                this.update();
+                this.cars.forEach(car => {
+                    const angle = car.angle || 0;
+                    ctx.translate(car.x, car.y);
+                    ctx.rotate(angle);
+                    ctx.translate(-car.x, -car.y);
+                    ctx.fillStyle = car.color;
+                    ctx.fillRect(car.x, car.y, 16, 8);
+
+                    ctx.translate(car.x, car.y);
+                    ctx.rotate(-angle);
+                    ctx.translate(-car.x, -car.y);
+
+                    // ctx.rotate(-0.5);
+                    
+                });
+    
+                
+            }
+        };
+
+        for (let i = 1; i < 10; i++) {
+            train.cars.push(
+                {offset: - i * 0.3, x: 0, y: 0, color: 'orange'},
+            )
+
+        }
+        train.cars.push({offset: -10 * 0.3, x: 0, y: 0, color: 'green'});
+
+        function drawBezier(line) {
+            if (line.length == 0) return;
+            // const line = _line.slice();
+            
+            
+            ctx.strokeStyle = "rgba(255,0,0,0.001)";
+
+            // ctx.moveTo(line[0].x, line[i + 1]);
+            // ctx.moveTo(line[0][0], line[0][1]);
+            let minX = Infinity;
+            let minY = Infinity;
+            let maxX = -Infinity;
+            let maxY = -Infinity;
+
+            for (let i = 0; i < line.length; i++) {
+                const x = line[i][0];
+                const y = line[i][1];
+                if (x < minX) {
+                    minX = x;
+                }
+                if (y < minY) {
+                    minY = y;
+                }
+                if (x > maxX) {
+                    maxX = x;
+                }
+                if (y > maxY) {
+                    maxY = y;
+                }
+            }
+            const step = 1 / Math.max(maxX - minX, maxY - minY);
+            
+            for (let i = 0; i < line.length; i++) {
+                ctx.fillStyle = '#f00';
+                ctx.fillRect( 
+                    line[i][0], line[i][1], 1, 1
+                );
+
+            }
+            if (line.length < BEZIER_LENGTH ) {
+
+                return; 
+            } else {
+                for (let t = 0; t <= 1; t += step) {
+                    const pos = pointAtBezier(line, t);
+                    
+                    ctx.fillStyle = '#ff0';// Math.random() < 0.5? '#fda' : '#0da';
+                    ctx.fillRect( 
+                        pos[0],//~~(Math.random() * 1 + pos[0] + pos[1] * 0.03 * Math.random()), 
+                        pos[1],//~~(Math.random() * 1 + pos[1] + pos[0] * 0.03 * Math.random()), 
+                        2,//1 + Math.random() * 3, 
+                        2,//1 + Math.random() * 3,
+                    );
+   
+                }
+                return;
+            }
+            for (let t = 0; t <= 1; t += step * 1.1) {
+                if (line.length < 2) continue;
+                const x1 = (line[0][0] * (1 - t) + line[1][0] * t) / 1;
+                const y1 = (line[0][1] * (1 - t) + line[1][1] * t) / 1;
+                
+                if (!line.done) {
+                    ctx.fillStyle = 'red';
+                    ctx.fillRect(x1, y1, 1.35, 1.35);
+
+                }
+                
+                if (line.length < 3) continue;
+
+                const x2 = (line[1][0] * (1 - t) + line[2][0] * t) / 1;
+                const y2 = (line[1][1] * (1 - t) + line[2][1] * t) / 1;
+                const x = (x1 * (1 - t) + x2 * t) / 1;
+                const y = (y1 * (1 - t) + y2 * t) / 1;
+                
+                if (!line.done) {
+                    ctx.fillStyle = 'green';
+                    ctx.fillRect(x2, y2, 1.35, 1.35);
+                }
+                
+                ctx.fillStyle = '#fda';
+                ctx.fillRect( 
+                    x, y, 2, 2
+                );
+                    
+
+                // ctx.lineTo(x, y);
+            }
+
+            let i = 0;
+            // while (i < line.length) {
+            //     ctx.moveTo(line[i], line[i + 1]);
+            //     i += 2;
+            //     ctx.lineTo(line[i], line[i + 1]);
+            // }
+            // ctx.stroke();
+                
+
+            // ctx.moveTo(line[0])
+        }
+        let counter = 0;
+        function render() {
+            counter++;
+            drawCount = 0;
+
+            // for (let i = 0; i < lines.length; i++) {
+            //     for (let j = 0; j < lines[i].length; j++) {
+            //         lines[i][j][0] += 0.5 * Math.cos( (i + j + counter / 100) / 4);   //Math.random() * 2 - 1;
+            //         lines[i][j][1] += Math.sin( (i + j + counter / 200) / 100);   //Math.random() * 2 - 1;
+            //     }
+            // }
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.strokeStyle = '#222';
+            ctx.beginPath();
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+            }
+            for (let y = 0; y < canvas.height; y += gridSize) {
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.height, y);
+            }
+
+            ctx.stroke();
+
+            ctx.fillStyle = "red";
+
+            lines.forEach(drawBezier);
+            requestAnimationFrame(render);
+
+            train.render();
+        }
+        render();
+        
+        function computeCoords(e) {
+            const rect = e.target.getBoundingClientRect();
+            const x = e.clientX - rect.x;
+            const y = e.clientY - rect.y;
+            
+            return [ Math.round(x / gridSize) * gridSize, Math.round(y / gridSize) * gridSize];
+        }
+
+        let down = false;
+        let line;
+
+        d.addEventListener('mousedown', e => {
+            console.log("mouse Down")
+            down = true;
+            if (!line) {
+                line = [];
+                lines.push(line);
+            }
+
+            if (line.length < BEZIER_LENGTH) {
+                line.push(computeCoords(e));
+            } 
+            
+            if (line.length == BEZIER_LENGTH) {
+                line.done = true;
+                line = [[line[line.length - 1][0], line[line.length - 1][1]]];
+                lines.push(line);
+            }
+
+        });
+        d.addEventListener('mouseup', e => {
+            down = false;
+        });
+
+        
+
+        d.addEventListener('mousemove', e => {
+            return;
+            const coords = computeCoords(e);
+            if (line && line.length >= 2) {
+                line[2] = coords;
+            }
+            if (!down) return;
+        });
+
+        d.addEventListener('keydown', e => {
+            const speed = 10;
+            if (e.keyCode == 37) {
+                viewport.x -= speed;
+            }
+            if (e.keyCode == 38) {
+                viewport.y -= speed;
+            }
+            if (e.keyCode == 40) {
+                viewport.y += speed;
+            }
+            if (e.keyCode == 39) {
+                viewport.x += speed;
+            }
+            e.preventDefault();
+        });
+    </script>
+</body>
