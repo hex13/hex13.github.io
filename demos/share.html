@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <canvas id="app" width="600" height="600"></canvas>
-<div>v. 5</div>
+<div>v. 6</div>
 <button id="share">share</button>
 <script>
 	const canvas = document.getElementById('app');
@@ -34,7 +34,7 @@
 		if (1) {
 				canvas.toBlob(async (blob) => {
 					console.log(blob, blob.type);
-					const file = new File(blob, "kotek.png", blob.type);
+					const file = new File([blob], "kotek.png", blob.type);
 					console.log(file);
 
 					try {
