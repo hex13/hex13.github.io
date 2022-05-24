@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <canvas id="app" width="600" height="600"></canvas>
-<div>v. 7</div>
+<div>v. 8</div>
 <button id="share">share</button>
 <script>
 	const canvas = document.getElementById('app');
@@ -15,7 +15,7 @@
 	function draw(e) {
 		const x = e.pageX;
 		const y = e.pageY;
-		ctx.fillRect(x, y, 2, 2);
+		ctx.fillRect(x, y, 5, 5);
 	}
 	canvas.addEventListener('pointerdown', (e) => {
 		down = true;
