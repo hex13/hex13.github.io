@@ -31,19 +31,20 @@
 
 	document.getElementById('share').addEventListener('click', async () => {
 		if (navigator.share) {
-			try {
-				const blob = canvas.toBlob();
-				alert(blob);
-				await navigator.share({
-					title: 'kotek 🥰🐈',
-					text: 'Wlazł kotek na płotek',
-					url: 'https://hex13.github.io/demos/share.html',
-					files: [blob],
+				canvas.toBlob(async (blob) => {
+					alert(blob);
+					try {
+						await navigator.share({
+							title: 'kotek 🥰🐈',
+							text: 'Wlazł kotek na płotek',
+							url: 'https://hex13.github.io/demos/share.html',
+							files: [blob],
+						});
+						alert("ok");
+					} catch (e) {
+						alert(e);
+					}
 				});
-				alert("ok");
-			} catch (e) {
-				alert(e);
-			}
 		} else {
 			alert("Your browser doesn't seem to support sharing.")
 		}
