@@ -1,14 +1,44 @@
 <!DOCTYPE html>
-<canvas width="600" height="600"></canvas>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<canvas id="app" width="600" height="600"></canvas>
 <button id="share">share</button>
 <script>
+	const canvas = document.getElementById('app');
+	const ctx = canvas.getContext('2d');
+
+	ctx.fillStyle = '#000';
+	ctx.fillRect(0, 0, 600, 600);
+	ctx.fillStyle = '#fff';
+
+	let down = false;
+	function draw(e) {
+		const x = e.pageX;
+		const y = e.pageY;
+		ctx.fillRect(x, y, 2, 2);
+	}
+	canvas.addEventListener('pointerdown', () => {
+		down = true;
+		draw(e);
+	});
+	canvas.addEventListener('pointermove', (e) => {
+		if (down) {
+			draw(e);
+		}
+	});
+	canvas.addEventListener('pointerup', () => {
+		down = false;
+	});
+
 	document.getElementById('share').addEventListener('click', async () => {
 		if (navigator.share) {
 			try {
+				const blob = canvas.toBlob();
+				alert(blob);
 				await navigator.share({
 					title: 'kotek 🥰🐈',
 					text: 'Wlazł kotek na płotek',
 					url: 'https://hex13.github.io/demos/share.html',
+					files: [blob],
 				});
 				alert("ok");
 			} catch (e) {
