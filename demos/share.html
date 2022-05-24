@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <canvas id="app" width="600" height="600"></canvas>
-<div>v. 8</div>
+<div>v. 9</div>
 <button id="share">share</button>
 <script>
 	const canvas = document.getElementById('app');
 	const ctx = canvas.getContext('2d');
 
 	ctx.fillStyle = '#000';
-	ctx.fillRect(0, 0, 600, 600);
+	ctx.fillRect(0, 0, 500, 500);
 	ctx.fillStyle = '#fff';
 
 	let down = false;
@@ -40,8 +40,8 @@
 					try {
 						await navigator.share({
 							title: 'kotek 🥰🐈',
-							// text: 'Wlazł kotek na płotek',
-							// url: 'https://hex13.github.io/demos/share.html',
+							text: 'Wlazł kotek na płotek',
+							url: 'https://hex13.github.io/demos/share.html',
 							files: [file],
 						});
 						alert("ok");
