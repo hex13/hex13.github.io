@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <canvas id="app" width="600" height="600"></canvas>
+<div>v. 1</div>
 <button id="share">share</button>
 <script>
 	const canvas = document.getElementById('app');
@@ -30,13 +31,15 @@
 	});
 
 	document.getElementById('share').addEventListener('click', async () => {
-		if (navigator.share) {
+		if (1) {
 				canvas.toBlob(async (blob) => {
+					console.log(blob);
 					alert(blob);
+
 					try {
 						await navigator.share({
 							title: 'kotek 🥰🐈',
-							text: 'Wlazł kotek na płotek',
+							// text: 'Wlazł kotek na płotek',
 							url: 'https://hex13.github.io/demos/share.html',
 							files: [blob],
 						});
